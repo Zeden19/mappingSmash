@@ -2,7 +2,6 @@
     import {slide} from 'svelte/transition';
 
     export let open = false;
-    export let mapResult;
     let animating = false;
 
 

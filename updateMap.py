@@ -96,6 +96,7 @@ def updateMap(startTime, endTime, country, numAttendees):
     if df.empty: return []
     df.drop(df[df['numAttendees'] < numAttendees].index, inplace=True)
     if numAttendees != 0: df = df.dropna(subset=['numAttendees'])
+    else: df['numAttendees'] = df['numAttendees'].fillna("unknown")
 
     df['venueAddress'] = df['venueAddress'].apply(geocode_address)
     df = df.dropna(subset=['venueAddress'])

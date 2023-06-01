@@ -10,8 +10,10 @@
 <s><li> Legend in the corner</li></s>
 <s><li> make sure filters stay the same when filter changes or when going to another page</li></s>
 <li><s>set start date for the second date based on the first date</s></li>
-<li>Fix that weird side-bar bug</li>
+<s><li>Fix that weird side-bar bug</li></s>
 <s><li>Make dates actually words</li></s>
 <li>Specific day searches</li>
-<li>Make the zoom for clusters smaller</li>
+<s><li>Make the zoom for clusters smaller</li></s>
+<li>Make zoom in for cluster clicking smaller</li>
+<li>Add Attendees to Info</li>
 

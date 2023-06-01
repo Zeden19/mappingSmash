@@ -10,7 +10,7 @@
     export let endDate;
     export let country;
     export let minAttendees = 0;
-    export let controller;
+    let controller;
 
     let loading = false;
     let errorMessage = false;
@@ -119,7 +119,7 @@
 
 <style>
     aside {
-        width: 100%;
+        width: 13em;
         height: 78%;
         overflow: hidden;
         display: block;

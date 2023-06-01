@@ -21,7 +21,8 @@
         map = new google.maps.Map(
             container, {zoom: 3, center: center});
         map.setOptions({minZoom: 3, maxZoom: 18});
-        markerCluster = new MarkerClusterer({map, markers})
+        markerCluster = new MarkerClusterer({map, markers, algorithmOptions: {maxZoom: 8}});
+
     });
 
     function hideMarkers() {
