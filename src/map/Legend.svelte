@@ -3,6 +3,8 @@
 
     export let open = false;
     export let mapResult;
+    let animating = false;
+
 
 
 </script>
@@ -10,8 +12,8 @@
 <div class="entire">
     <button on:click={() => open = !open}>Legend</button>
     {#if open}
-        <aside transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
-            <p>In Smash Mapping, markers have different colours based on how many attendees are attending.</p>
+        <aside class:animating={animating} transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
+            <p>In Smash Mapping, markers have different<br> colours based on how many attendees are<br> attending.</p>
             <p>The markers are:</p>
 
             <div class="marker">
@@ -32,11 +34,7 @@
 
             <p>Additionally, the
                 <img alt="yellow-pointer" src="https://maps.google.com/mapfiles/ms/icons/yellow-dot.png">
-                marker indicates that this marker was moved slightly because it was on-top of another marker.
-
-            </p>
-
-
+                marker indicates that<br> this marker was moved slightly because it was<br> on-top of another marker.</p>
         </aside>
     {/if}
 </div>
@@ -62,7 +60,6 @@
     .entire {
         text-align: left;
         display: flex;
-        height: 100%;
         position: absolute;
         right: 0.3%;
         top: 8%;
@@ -80,21 +77,22 @@
         background-color: #555;
     }
 
+
     aside {
         width: 17em;
-        height: 50%;
         display: block;
         background-color: #f2f2f2;
         font-family: 'Oswald', sans-serif;
         border: black 4px solid;
         padding: 5px 5px 5px 5px;
+        white-space: nowrap;
 
     }
 
     p {
         font-size: 1em;
         margin-top: 5px;
+        overflow-x: hidden;
     }
-
 
 </style>

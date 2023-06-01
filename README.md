@@ -13,4 +13,5 @@
 <li>Fix that weird side-bar bug</li>
 <s><li>Make dates actually words</li></s>
 <li>Specific day searches</li>
+<li>Make the zoom for clusters smaller</li>
 
