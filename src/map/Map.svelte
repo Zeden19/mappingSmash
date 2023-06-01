@@ -80,6 +80,7 @@
                         "<p><strong>Name: </strong>" + mapResult[i][0] + "</p>" +
                         "<p><strong>Address: </strong>" + mapResult[i][4] + "</p>" +
                         "<p><strong>Date: </strong>" + mapResult[i][6] + "</p>" +
+                        "<p><strong>Attendees: </strong>" + mapResult[i][7] + "</p>" +
                         "<p><strong>Contact Info: </strong>" + mailTo + "</p>" +
                         "<p><strong>Start.gg site: </strong><a target='_blank' href='" + mapResult[i][5] + "'>" + mapResult[i][5] + "</a></p>" +
                         "</div>";

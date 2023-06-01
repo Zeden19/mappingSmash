@@ -15,7 +15,7 @@
 
 <body>
 <section>
-    <div style="display: flex; text-align: center; border: gray solid 5px; height: 100vh">
+    <div style="display: flex; text-align: center; border: gray solid 5px; height: 90vh">
         {#if ready}
             <Map bind:mapResult/>
             <Filter bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees/>
