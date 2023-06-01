@@ -6,11 +6,11 @@
 
     const todayString = new Date().toISOString().split('T')[0];
     export let mapResult;
-    let startDate = todayString;
-    let endDate;
-    let country;
+    export let startDate = todayString;
+    export let endDate;
+    export let country;
     export let minAttendees = 0;
-    let controller;
+    export let controller;
 
     let loading = false;
     let errorMessage = false;

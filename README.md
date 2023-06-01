@@ -8,7 +8,9 @@
 <li> USA state filter</li>
 <li> <s>Cancel button while loading & disable filter button while loading</s></li>
 <s><li> Legend in the corner</li></s>
-<li> make sure filters stay the same when filter changes or when going to another page</li>
+<s><li> make sure filters stay the same when filter changes or when going to another page</li></s>
 <li><s>set start date for the second date based on the first date</s></li>
 <li>Fix that weird side-bar bug</li>
+<s><li>Make dates actually words</li></s>
+<li>Specific day searches</li>
 

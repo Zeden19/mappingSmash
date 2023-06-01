@@ -89,7 +89,7 @@ def updateMap(startTime, endTime, country, numAttendees):
 
     # fixing the date format and getting the addresses
     for i in resData['data']['tournaments']['nodes']:
-        i['startAt'] = datetime.fromtimestamp(i['startAt']).strftime('%Y-%m-%d')
+        i['startAt'] = datetime.fromtimestamp(i['startAt']).strftime('%A, %B %d, %Y')
 
     # geolocating the addresses
     df = pd.DataFrame(resData['data']['tournaments']['nodes'])
@@ -106,6 +106,7 @@ def updateMap(startTime, endTime, country, numAttendees):
 
     # creating the locations list
     locations = []
+
     for i, r in df.iterrows():
         if r['lat'] is None or r['lon'] is None:
             continue

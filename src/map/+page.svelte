@@ -5,7 +5,10 @@
 
     let mapResult;
     export let ready;
-
+    export let startDate;
+    export let endDate;
+    export let country;
+    export let minAttendees = 0;
 
 </script>
 
@@ -15,7 +18,7 @@
     <div style="display: flex; text-align: center; border: gray solid 5px; height: 720px">
         {#if ready}
             <Map bind:mapResult/>
-            <Filter bind:mapResult/>
+            <Filter bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees/>
             <Legend/>
         {/if}
     </div>

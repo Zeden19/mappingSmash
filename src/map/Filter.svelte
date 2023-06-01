@@ -4,13 +4,16 @@
 
     export let open = false;
     export let mapResult;
-
+    export let startDate;
+    export let endDate;
+    export let country;
+    export let minAttendees = 0;
 
 </script>
 
 <div style="position: absolute; top: 115px">
     {#if open}
-		<Sidebar bind:mapResult/>
+		<Sidebar bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees/>
     {/if}
     <button on:click={() => open = !open}>Filter</button>
 </div>
@@ -46,8 +49,6 @@
       background-color: #CCC;
       color: black;
       font-weight: bold;
-
-
   }
 
 </style>

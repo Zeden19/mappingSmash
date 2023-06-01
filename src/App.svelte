@@ -9,6 +9,10 @@
 
     export let activePage = 'map';
     export let ready;
+    export let startDate =  new Date().toISOString().split('T')[0];
+    export let endDate;
+    export let country;
+    export let minAttendees = 0;
 </script>
 
 
@@ -30,7 +34,7 @@
     </nav>
 
     {#if activePage === 'map'}
-        <MapPage bind:ready/>
+        <MapPage bind:ready bind:startDate bind:endDate bind:country bind:minAttendees/>
     {:else if activePage === 'about'}
         <AboutPage/>
     {:else if activePage === 'contact'}
