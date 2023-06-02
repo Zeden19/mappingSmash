@@ -7,9 +7,15 @@ from graphqlclient import GraphQLClient
 from flask import Flask, jsonify, send_from_directory, request
 from datetime import datetime
 import time
+from dotenv import load_dotenv
+import os
 
-GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
-SMASH_GG_API_KEY = os.environ['SMASH_GG_API_KEY']
+load_dotenv()
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
+SMASH_GG_API_KEY = os.environ.get('SMASH_GG_API_KEY')
+
+# GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
+# SMASH_GG_API_KEY = os.environ['SMASH_GG_API_KEY']
 geolocator = GoogleV3(GOOGLE_MAPS_API_KEY)
 app = Flask(__name__)
 

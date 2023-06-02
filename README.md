@@ -5,7 +5,7 @@
 <li> Date Limit for the beta (so people don't use all my tokens)
 <li> Make icons better instead of using random ones </li>
 <li><s>Add more icons for different sizes of tournaments</s></li>
-<li> USA state filter</li>
+<s><li> USA state filter</li></s>
 <li><s>Cancel button while loading & disable filter button while loading</s></li>
 <s><li> Legend in the corner</li></s>
 <s><li> make sure filters stay the same when filter changes or when going to another page</li></s>

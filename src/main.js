@@ -10,5 +10,3 @@ const app = new App({
 window.initMap = function ready() {
 	app.$set({ ready: true });
 }
-
-export default app;
