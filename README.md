@@ -6,7 +6,7 @@
 <li> Make icons better instead of using random ones </li>
 <li><s>Add more icons for different sizes of tournaments</s></li>
 <li> USA state filter</li>
-<li> <s>Cancel button while loading & disable filter button while loading</s></li>
+<li><s>Cancel button while loading & disable filter button while loading</s></li>
 <s><li> Legend in the corner</li></s>
 <s><li> make sure filters stay the same when filter changes or when going to another page</li></s>
 <li><s>set start date for the second date based on the first date</s></li>
@@ -14,6 +14,6 @@
 <s><li>Make dates actually words</li></s>
 <li>Specific day searches</li>
 <s><li>Make the zoom for clusters smaller</li></s>
-<li>Make zoom in for cluster clicking smaller</li>
-<li>Add Attendees to Info</li>
+<s><li>Make zoom in for cluster clicking smaller</li></s>
+<s><li>Add Attendees to Info</li></s>
 

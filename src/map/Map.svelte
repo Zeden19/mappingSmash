@@ -19,9 +19,9 @@
 
     onMount(async () => {
         map = new google.maps.Map(
-            container, {zoom: 3, center: center});
-        map.setOptions({minZoom: 3, maxZoom: 18});
-        markerCluster = new MarkerClusterer({map, markers, algorithmOptions: {maxZoom: 8}});
+            container, {zoom: 3, center: center,});
+        map.setOptions({minZoom: 3, maxZoom: 18, zoomControl: true});
+        markerCluster = new MarkerClusterer({map, markers, algorithmOptions: {maxZoom: 7}});
 
     });
 
@@ -93,6 +93,10 @@
                     google.maps.event.addListener(map, "drag", function (event) {
                         infowindow.close();
                     });
+
+                    google.maps.event.addListener(markerCluster, 'click', function (cluster) {
+                        infowindow.close();
+                    });
                 };
 
             })(marker, i));
@@ -100,6 +104,7 @@
         // update with new markers
         markerCluster.addMarkers(markers)
     }
+
 
     $: {
         if (mapResult) {

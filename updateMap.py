@@ -42,23 +42,26 @@ def update_map():
     end_date = data.get('endDate')
     country = data.get('country')
     attendees = data.get('minAttendees')
+    state = data.get('state')
+    print(state)
     if attendees is None: attendees = 0
     start_date = datetime(int(start_date[:4]), int(start_date[5:7]), int(start_date[8:10]))
     end_date = datetime(int(end_date[:4]), int(end_date[5:7]), int(end_date[8:10]))
     result = jsonify(
-        updateMap(int(time.mktime(start_date.timetuple())), int(time.mktime(end_date.timetuple())), country, attendees))
+        updateMap(int(time.mktime(start_date.timetuple())), int(time.mktime(end_date.timetuple())), country, attendees,
+                  state))
     return result
 
 
-def updateMap(startTime, endTime, country, numAttendees):
+def updateMap(startTime, endTime, country, numAttendees, state=None):
     authToken = SMASH_GG_API_KEY
     apiVersion = 'alpha'
     client = GraphQLClient('https://api.start.gg/gql/' + apiVersion)
     client.inject_token('Bearer ' + authToken)
 
     # start.gg code
-    getTournaments = client.execute('''
-    query TournamentsByCountry($cCode: String!, $perPage: Int!, $after: Timestamp!, $before: Timestamp) {
+    query = '''
+    query TournamentsByCountry($cCode: String!, $perPage: Int!, $after: Timestamp!, $before: Timestamp, $state: String) {
       tournaments(query: {
         perPage: $perPage
         filter: {
@@ -67,6 +70,7 @@ def updateMap(startTime, endTime, country, numAttendees):
           beforeDate: $before
           videogameIds: [1, 1386]
           regOpen: true
+          addrState: $state
         }
       }) {
         nodes {
@@ -78,31 +82,44 @@ def updateMap(startTime, endTime, country, numAttendees):
           numAttendees
         }
       }
-    } ''',
-                                    {
-                                        "cCode": country,
-                                        "perPage": 200,
-                                        "after": startTime,
-                                        "before": endTime
-                                    })
+    } '''
+
+    variables = {
+        "cCode": country,
+        "perPage": 200,
+        "after": startTime,
+        "before": endTime,
+        "state": state
+    }
+
+    if state is None:
+        print("No state")
+        variables.pop("state")
+        query.strip("addrState: $state").strip(", $state: String!")
+
+    getTournaments = client.execute(query, variables)
     resData = json.loads(getTournaments)
 
     # fixing the date format and getting the addresses
+    print(resData)
     for i in resData['data']['tournaments']['nodes']:
         i['startAt'] = datetime.fromtimestamp(i['startAt']).strftime('%A, %B %d, %Y')
 
     # geolocating the addresses
     df = pd.DataFrame(resData['data']['tournaments']['nodes'])
-    if df.empty: return []
+    if df.empty:
+        return []
+
     df.drop(df[df['numAttendees'] < numAttendees].index, inplace=True)
-    if numAttendees != 0: df = df.dropna(subset=['numAttendees'])
-    else: df['numAttendees'] = df['numAttendees'].fillna("unknown")
+    if numAttendees != 0:
+        df = df.dropna(subset=['numAttendees'])
+    else:
+        df['numAttendees'] = df['numAttendees'].fillna("unknown")
 
     df['venueAddress'] = df['venueAddress'].apply(geocode_address)
     df = df.dropna(subset=['venueAddress'])
     df = df.reset_index(drop=True)
     df['point'] = df['venueAddress'].apply(lambda loc: tuple(loc.point) if loc else None)
-
     df[['lat', 'lon', 'altitude']] = pd.DataFrame(df['point'].tolist(), index=df.index)
 
     # creating the locations list
