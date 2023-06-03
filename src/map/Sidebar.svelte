@@ -11,6 +11,7 @@
     export let country;
     export let minAttendees = 0;
     export let state;
+    export let game;
     let controller;
 
     let loading = false;
@@ -36,6 +37,7 @@
             endDate,
             country,
             minAttendees,
+            game
         };
 
         if (country === 'US') {
@@ -77,6 +79,23 @@
     }
 </script>
 <aside transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
+    <label> Game:
+        <select bind:value={game}>
+            <option value="1386">Ultimate</option>
+            <option value="1">Melee</option>
+            <option value="1 1386">Both</option>
+        </select>
+    </label>
+
+    <label>Country:
+        <select bind:value={country}>
+            <option value="CA">Canada</option>
+            <option value="US">USA</option>
+            <option value="MX">Mexico</option>
+            <option value="JP">Japan</option>
+        </select>
+    </label>
+
     <label> Start Date:
         <input min={todayString} bind:value={startDate} type="date">
     </label>
@@ -87,15 +106,6 @@
 
     <label>Min Attendees:
         <input type="number" min="0" bind:value={minAttendees}>
-    </label>
-
-    <label>Country:
-        <select bind:value={country}>
-            <option value="CA">Canada</option>
-            <option value="US">USA</option>
-            <option value="MX">Mexico</option>
-            <option value="JP">Japan</option>
-        </select>
     </label>
 
     {#if country === 'US'}
@@ -154,7 +164,7 @@
                 <option value="WY">Wyoming</option>
             </select>
         </label>
-{/if}
+    {/if}
 
 
     <button disabled='{loading}' on:click={() => updateMap()}>Apply Filters</button>

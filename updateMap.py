@@ -49,32 +49,35 @@ def update_map():
     country = data.get('country')
     attendees = data.get('minAttendees')
     state = data.get('state')
-    print(state)
+    game = data.get('game')
     if attendees is None: attendees = 0
     start_date = datetime(int(start_date[:4]), int(start_date[5:7]), int(start_date[8:10]))
     end_date = datetime(int(end_date[:4]), int(end_date[5:7]), int(end_date[8:10]))
     result = jsonify(
         updateMap(int(time.mktime(start_date.timetuple())), int(time.mktime(end_date.timetuple())), country, attendees,
-                  state))
+                  game, state))
     return result
 
 
-def updateMap(startTime, endTime, country, numAttendees, state=None):
+def updateMap(startTime, endTime, country, numAttendees, game, state=None):
     authToken = SMASH_GG_API_KEY
     apiVersion = 'alpha'
     client = GraphQLClient('https://api.start.gg/gql/' + apiVersion)
     client.inject_token('Bearer ' + authToken)
+    game = game.split(' ')
+    print(game, type(game))
 
     # start.gg code
     query = '''
-    query TournamentsByCountry($cCode: String!, $perPage: Int!, $after: Timestamp!, $before: Timestamp, $state: String) {
+    query TournamentsByCountry($cCode: String!, $perPage: Int!, $after: Timestamp!, $before: Timestamp, $state: String
+    $game: [ID]) {
       tournaments(query: {
         perPage: $perPage
         filter: {
           countryCode: $cCode
           afterDate: $after
           beforeDate: $before
-          videogameIds: [1, 1386]
+          videogameIds: $game
           regOpen: true
           addrState: $state
         }
@@ -95,11 +98,11 @@ def updateMap(startTime, endTime, country, numAttendees, state=None):
         "perPage": 200,
         "after": startTime,
         "before": endTime,
-        "state": state
+        "state": state,
+        "game": game
     }
 
     if state is None:
-        print("No state")
         variables.pop("state")
         query.strip("addrState: $state").strip(", $state: String!")
 

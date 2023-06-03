@@ -16,4 +16,11 @@
 <s><li>Make the zoom for clusters smaller</li></s>
 <s><li>Make zoom in for cluster clicking smaller</li></s>
 <s><li>Add Attendees to Info</li></s>
+<s><li>Link to google maps when clicking on address</li></s>
 
+
+<h2>Bigger Features:</h2>
+<li>Directions and distance from current location (or from a set location). Showing u the closes tournament towards you</li>
+<li>Tournament search on current query (date, name, etc.)</li>
+<li>Proper time zones (user sets the time-zone</li>
+<li>More game selection (with multiple game selection)</li>

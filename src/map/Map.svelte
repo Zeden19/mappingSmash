@@ -78,7 +78,7 @@
                     var infoContent =
                         "<div style='text-align: left'>" +
                         "<p><strong>Name: </strong>" + mapResult[i][0] + "</p>" +
-                        "<p><strong>Address: </strong>" + mapResult[i][4] + "</p>" +
+                        "<p><strong>Address: </strong><a target='_blank' href='https://www.google.com/maps/place/" + mapResult[i][4].replace(" ", "+") + "'>" + mapResult[i][4] + "</a></p>" +
                         "<p><strong>Date: </strong>" + mapResult[i][6] + "</p>" +
                         "<p><strong>Attendees: </strong>" + mapResult[i][7] + "</p>" +
                         "<p><strong>Contact Info: </strong>" + mailTo + "</p>" +
