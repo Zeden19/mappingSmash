@@ -79,6 +79,7 @@
     }
 </script>
 <aside transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
+    <h2 style="font-style: italic">Filters</h2>
     <label> Game:
         <select bind:value={game}>
             <option value="1386">Ultimate</option>
@@ -96,11 +97,11 @@
         </select>
     </label>
 
-    <label> Start Date:
+    <label> From:
         <input min={todayString} bind:value={startDate} type="date">
     </label>
 
-    <label> End Date:
+    <label> To:
         <input min="{startDate}" bind:value={endDate} type="date">
     </label>
 
@@ -111,6 +112,7 @@
     {#if country === 'US'}
         <label>State:
             <select bind:value={state}>
+                <option disabled style="color: gray" value="">All (Coming Soon)</option>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option>
@@ -167,7 +169,7 @@
     {/if}
 
 
-    <button disabled='{loading}' on:click={() => updateMap()}>Apply Filters</button>
+    <button disabled='{loading}' on:click={() => updateMap()}>Search</button>
 
     {#if loading}
         <button on:click={() => cancelRequest()}>Cancel</button>
@@ -234,4 +236,10 @@
     button:disabled {
         background-color: grey;
     }
+
+    h2 {
+        margin: 10px 0 10px 0;
+        text-decoration: underline;
+    }
+
 </style>

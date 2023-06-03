@@ -15,7 +15,7 @@
     {#if open}
 		<Sidebar bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees/>
     {/if}
-    <button on:click={() => open = !open}>Filter</button>
+    <button class:selected={open} on:click={() => open = !open}>Search</button>
 </div>
 
 <style>
@@ -46,9 +46,11 @@
     }
 
   .selected {
-      background-color: #CCC;
-      color: black;
-      font-weight: bold;
+      background-color: #555;
+  }
+
+  .selected:hover {
+      background-color: black;
   }
 
 </style>

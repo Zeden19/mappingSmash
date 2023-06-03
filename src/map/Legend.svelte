@@ -5,11 +5,10 @@
     let animating = false;
 
 
-
 </script>
 
 <div class="entire">
-    <button on:click={() => open = !open}>Legend</button>
+    <button class:selected={open} on:click={() => open = !open}>Legend</button>
     {#if open}
         <aside class:animating={animating} transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
             <p>In Smash Mapping, markers have different<br> colours based on how many attendees are<br> attending.</p>
@@ -20,20 +19,24 @@
             </div>
 
             <div class="marker">
-                <img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png" alt="green-pointer"> Between 51 and 100 attendees
+                <img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png" alt="green-pointer"> Between 51 and
+                100 attendees
             </div>
 
             <div class="marker">
-                <img src="https://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="blue-pointer"> Between 101 and 500 attendees
+                <img src="https://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="blue-pointer"> Between 101 and
+                500 attendees
             </div>
 
             <div class="marker">
-                <img src="https://maps.google.com/mapfiles/ms/icons/purple-dot.png" alt="purple-pointer"> Over 500 attendees
+                <img src="https://maps.google.com/mapfiles/ms/icons/purple-dot.png" alt="purple-pointer"> Over 500
+                attendees
             </div>
 
             <p>Additionally, the
                 <img alt="yellow-pointer" src="https://maps.google.com/mapfiles/ms/icons/yellow-dot.png">
-                marker indicates that<br> this marker was moved slightly because it was<br> on-top of another marker.</p>
+                marker indicates that<br> this marker was moved slightly because it was<br> on-top of another marker.
+            </p>
         </aside>
     {/if}
 </div>
@@ -92,6 +95,14 @@
         font-size: 1em;
         margin-top: 5px;
         overflow-x: hidden;
+    }
+
+    .selected {
+        background-color: #555;
+    }
+
+    .selected:hover {
+        background-color: black;
     }
 
 </style>
