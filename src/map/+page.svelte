@@ -2,6 +2,8 @@
     import Map from "./Map.svelte";
     import Filter from "./Filter.svelte";
     import Legend from "./Legend.svelte";
+    import Help from "./Help.svelte";
+
 
     let mapResult;
     export let ready;
@@ -19,6 +21,7 @@
         {#if ready}
             <Map bind:mapResult/>
             <Filter bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees/>
+            <Help/>
             <Legend/>
         {/if}
     </div>
