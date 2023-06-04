@@ -18,7 +18,7 @@
 
 <svelte:head>
     <script defer async
-            src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq8n7vr3RTnF189HPa3gk-OcwJiHXPzZg&callback=initMap">
     </script>
     <title>Smash Mapping: Map</title>
 </svelte:head>

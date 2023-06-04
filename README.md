@@ -18,6 +18,7 @@
 <s><li>Add Attendees to Info</li></s>
 <s><li>Link to google maps when clicking on address</li></s>
 <li>Help Screen</li>
+<li>Fix date (For some reason its ahead by 1 day, mayb cause of timezone issues)</li>
 
 
 <h2>Bigger Features:</h2>
