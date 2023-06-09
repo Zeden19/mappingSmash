@@ -4,7 +4,7 @@
 
 
 <div>
-    <button onclick="help_dialog.showModal()">?</button>
+    <button onclick="help_dialog.showModal()">Help</button>
 </div>
 
 <dialog style="width: 30%" id="help_dialog">
@@ -52,6 +52,7 @@
 
     dialog {
         border-radius: 10px;
+        border: 5px solid black;
     }
 
     dialog::backdrop {

@@ -17,7 +17,7 @@
 <s><li>Make zoom in for cluster clicking smaller</li></s>
 <s><li>Add Attendees to Info</li></s>
 <s><li>Link to google maps when clicking on address</li></s>
-<li>Help Screen</li>
+<s><li>Help Screen</li></s>
 <li>Fix date (For some reason its ahead by 1 day, mayb cause of timezone issues)</li>
 
 
