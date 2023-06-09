@@ -8,12 +8,13 @@
     export let endDate;
     export let country;
     export let minAttendees = 0;
+    export let showShareDialog;
 
 </script>
 
 <div style="position: absolute; top: 115px">
     {#if open}
-		<Sidebar bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees/>
+		<Sidebar bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:showShareDialog/>
     {/if}
     <button class:selected={open} on:click={() => open = !open}>Search</button>
 </div>
