@@ -12,7 +12,10 @@
     export let minAttendees = 0;
     export let state;
     export let game;
+
     let controller;
+    let hasSearched = false;
+    export let showShareDialog = false;
 
     let loading = false;
     let errorMessage = false;
@@ -30,6 +33,10 @@
         if (startDate > endDate) {
             alert("Start date must be before end date");
             return;
+        }
+
+        if (!hasSearched) {
+            showShareDialog = true;
         }
 
         const requestData = {
@@ -70,6 +77,7 @@
             }
         }
         loading = false;
+        hasSearched = true;
     }
 
     function cancelRequest() {
@@ -78,6 +86,19 @@
         }
     }
 </script>
+
+{#if showShareDialog}
+    <script>
+        const share_dialog = document.getElementById('share_dialog');
+        share_dialog.showModal();
+    </script>
+{/if}
+
+<dialog id="share_dialog">
+    <p>apiodjoa</p>
+    <button onclick="share_dialog.close()">Close</button>
+</dialog>
+
 <aside transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
     <h2 style="font-style: italic">Filters</h2>
     <label> Game:
@@ -188,9 +209,7 @@
         <p style="color: red">Request cancelled</p>
     {/if}
 
-
 </aside>
-
 
 <style>
     aside {

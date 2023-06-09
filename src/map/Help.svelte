@@ -46,7 +46,7 @@
         text-align: left;
         display: flex;
         position: absolute;
-        right: 1%;
+        right: 0.3%;
         top: 8%;
     }
 
