@@ -1,4 +1,5 @@
 <script>
+    import {slide} from 'svelte/transition';
 
 </script>
 
@@ -58,5 +59,28 @@
     dialog::backdrop {
         background-color: rgba(0, 0, 0, 0.5);
     }
+
+    dialog[open] {
+		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	@keyframes zoom {
+		from {
+			transform: scale(0.5);
+		}
+		to {
+			transform: scale(1);
+		}
+	}
+	dialog[open]::backdrop {
+		animation: fade 0.2s ease-out;
+	}
+	@keyframes fade {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 
 </style>
