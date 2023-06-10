@@ -9,7 +9,7 @@
 
     export let activePage = 'map';
     export let ready;
-    export let startDate =  new Date().toISOString().split('T')[0];
+    export let startDate = new Date().toISOString().split('T')[0];
     export let endDate;
     export let country;
     export let minAttendees = 0;
@@ -18,7 +18,7 @@
 
 <svelte:head>
     <script defer async
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq8n7vr3RTnF189HPa3gk-OcwJiHXPzZg&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
     </script>
     <title>Smash Mapping: Map</title>
 </svelte:head>

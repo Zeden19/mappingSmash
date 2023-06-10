@@ -1,8 +1,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-<script>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8">
     import {slide} from 'svelte/transition';
+    import TwitterShare from './TwitterShare.svelte';
 
     const todayString = new Date().toISOString().split('T')[0];
     export let mapResult;
@@ -95,8 +97,18 @@
 {/if}
 
 <dialog id="share_dialog">
-    <p>apiodjoa</p>
-    <button onclick="share_dialog.close()">Close</button>
+    <div><p>
+        Thanks for searching! <br><br>
+        Please consider sharing this app, the more this app is used the more attendees local tournaments can get! <br>
+    </p>
+
+        <TwitterShare
+                text="Check out Smash Mapping, a new way to find local tournaments."
+                url="https://mapping-smash.vercel.app/"></TwitterShare>
+        <br><br>
+
+        <button onclick="share_dialog.close()">Close</button>
+    </div>
 </dialog>
 
 <aside transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
@@ -260,5 +272,48 @@
         margin: 10px 0 10px 0;
         text-decoration: underline;
     }
+
+    dialog::backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    dialog {
+        height: 25%;
+        width: 30%;
+        text-align: center;
+        border: 5px solid black;
+        border-radius: 10px;
+        transition: all 2.5s;
+        overflow: hidden;
+    }
+
+    dialog[open] {
+        animation: linearwipe 0.2s;
+    }
+
+    @keyframes linearwipe {
+        from {
+            width: 0;
+        }
+    }
+
+    dialog[open]::backdrop {
+        animation: fade 0.2s ease-out;
+    }
+
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    p {
+        margin-top: 2px;
+        overflow: hidden;
+    }
+
 
 </style>
