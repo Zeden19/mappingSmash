@@ -17,7 +17,8 @@
 <s><li>Make zoom in for cluster clicking smaller</li></s>
 <s><li>Add Attendees to Info</li></s>
 <s><li>Link to google maps when clicking on address</li></s>
-<li>Help Screen</li>
+<s><li>Help Screen</li></s>
+<li>Fix date (For some reason its ahead by 1 day, mayb cause of timezone issues)</li>
 
 
 <h2>Bigger Features:</h2>
@@ -26,3 +27,4 @@
 <li>Proper time zones (user sets the time-zone</li>
 <li>More game selection (with multiple game selection)</li>
 <li>Add 1 time dialog box to thank user for using my website, and to share my website on social media</li>
+<li>A proper tutorial</li>

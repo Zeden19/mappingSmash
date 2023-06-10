@@ -64,7 +64,7 @@
         display: flex;
         position: absolute;
         right: 0.3%;
-        top: 8%;
+        top: 14%;
     }
 
     .marker {
