@@ -9,7 +9,7 @@
 
     export let activePage = 'map';
     export let ready;
-    export let startDate =  new Date().toISOString().split('T')[0];
+    export let startDate = new Date().toISOString().split('T')[0];
     export let endDate;
     export let country;
     export let minAttendees = 0;

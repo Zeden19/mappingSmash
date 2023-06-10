@@ -1,8 +1,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-<script>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8">
     import {slide} from 'svelte/transition';
+    import TwitterShare from './TwitterShare.svelte';
 
     const todayString = new Date().toISOString().split('T')[0];
     export let mapResult;
@@ -12,7 +14,10 @@
     export let minAttendees = 0;
     export let state;
     export let game;
+
     let controller;
+    let hasSearched = false;
+    export let showShareDialog = false;
 
     let loading = false;
     let errorMessage = false;
@@ -32,6 +37,10 @@
             return;
         }
 
+        if (!hasSearched) {
+            showShareDialog = true;
+        }
+
         const requestData = {
             startDate,
             endDate,
@@ -40,7 +49,7 @@
             game
         };
 
-        if (country === 'US') {
+        if (country === 'US' && state !== "all") {
             requestData.state = state;
         }
 
@@ -70,6 +79,7 @@
             }
         }
         loading = false;
+        hasSearched = true;
     }
 
     function cancelRequest() {
@@ -78,6 +88,29 @@
         }
     }
 </script>
+
+{#if showShareDialog}
+    <script>
+        const share_dialog = document.getElementById('share_dialog');
+        share_dialog.showModal();
+    </script>
+{/if}
+
+<dialog id="share_dialog">
+    <div><p>
+        Thanks for searching! <br><br>
+        Please consider sharing this app, the more this app is used the more attendees local tournaments can get! <br>
+    </p>
+
+        <TwitterShare
+                text="Check out Smash Mapping, a new way to find local tournaments."
+                url="https://mapping-smash.vercel.app/"></TwitterShare>
+        <br><br>
+
+        <button onclick="share_dialog.close()">Close</button>
+    </div>
+</dialog>
+
 <aside transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
     <h2 style="font-style: italic">Filters</h2>
     <label> Game:
@@ -97,22 +130,9 @@
         </select>
     </label>
 
-    <label> From:
-        <input min={todayString} bind:value={startDate} type="date">
-    </label>
-
-    <label> To:
-        <input min="{startDate}" bind:value={endDate} type="date">
-    </label>
-
-    <label>Min Attendees:
-        <input type="number" min="0" bind:value={minAttendees}>
-    </label>
-
     {#if country === 'US'}
         <label>State:
             <select bind:value={state}>
-                <option disabled style="color: gray" value="">All (Coming Soon)</option>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option>
@@ -164,9 +184,22 @@
                 <option value="WV">West Virginia</option>
                 <option value="WI">Wisconsin</option>
                 <option value="WY">Wyoming</option>
+                <option value="all">All</option>
             </select>
         </label>
     {/if}
+
+    <label> From:
+        <input min={todayString} bind:value={startDate} type="date">
+    </label>
+
+    <label> To:
+        <input min="{startDate}" bind:value={endDate} type="date">
+    </label>
+
+    <label>Min Attendees:
+        <input type="number" min="0" bind:value={minAttendees}>
+    </label>
 
 
     <button disabled='{loading}' on:click={() => updateMap()}>Search</button>
@@ -188,9 +221,7 @@
         <p style="color: red">Request cancelled</p>
     {/if}
 
-
 </aside>
-
 
 <style>
     aside {
@@ -241,5 +272,48 @@
         margin: 10px 0 10px 0;
         text-decoration: underline;
     }
+
+    dialog::backdrop {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    dialog {
+        height: 25%;
+        width: 30%;
+        text-align: center;
+        border: 5px solid black;
+        border-radius: 10px;
+        transition: all 2.5s;
+        overflow: hidden;
+    }
+
+    dialog[open] {
+        animation: linearwipe 0.2s;
+    }
+
+    @keyframes linearwipe {
+        from {
+            width: 0;
+        }
+    }
+
+    dialog[open]::backdrop {
+        animation: fade 0.2s ease-out;
+    }
+
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    p {
+        margin-top: 2px;
+        overflow: hidden;
+    }
+
 
 </style>
