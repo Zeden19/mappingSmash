@@ -10,3 +10,5 @@ const app = new App({
 window.initMap = function ready() {
 	app.$set({ ready: true });
 }
+
+console.log(process.env.API_URL);
