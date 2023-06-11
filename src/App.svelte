@@ -13,12 +13,13 @@
     export let endDate;
     export let country;
     export let minAttendees = 0;
-</script>
 
+    let map_key = process.env.GOOGLE_MAPS_API_KEY;
+</script>
 
 <svelte:head>
     <script defer async
-            src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+            src={`https://maps.googleapis.com/maps/api/js?key=${map_key}&callback=initMap`}>
     </script>
     <title>Smash Mapping: Map</title>
 </svelte:head>
