@@ -5,6 +5,7 @@
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8">
     import {slide} from 'svelte/transition';
     import TwitterShare from './TwitterShare.svelte';
+    import {GraphQLClient} from 'graphql-request';
 
     const todayString = new Date().toISOString().split('T')[0];
     export let mapResult;
@@ -24,9 +25,114 @@
     let noData = false;
     let cancelled = false;
 
+    let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+    let SMASH_GG_API_KEY = process.env.SMASH_GG_API_KEY;
+
+    async function getData() {
+        // todo: cancel button will not work now will haave to find a differnet way
+        if (minAttendees === undefined) {
+            minAttendees = 0;
+        }
+
+        let tournaments;
+        let unixStartTime = new Date(`${startDate.slice(0, 4)}-${startDate.slice(5, 7)}-${startDate.slice(8, 10)}`);
+        let unixEndTime = new Date(`${endDate.slice(0, 4)}-${endDate.slice(5, 7)}-${endDate.slice(8, 10)}`);
+        unixStartTime = Math.floor(unixStartTime.getTime() / 1000);
+        unixEndTime = Math.floor(unixEndTime.getTime() / 1000);
+
+        const apiVersion = 'alpha';
+        const endpoint = 'https://api.start.gg/gql/' + apiVersion;
+        const client = new GraphQLClient(endpoint, {
+            headers: {
+                Authorization: 'Bearer ' + SMASH_GG_API_KEY,
+            },
+        });
+
+        let query = `
+            query TournamentsByCountry($cCode: String!, $perPage: Int!, $after: Timestamp!, $before: Timestamp, $state: String
+            $game: [ID]) {
+              tournaments(query: {
+                perPage: $perPage
+                filter: {
+                  countryCode: $cCode
+                  afterDate: $after
+                  beforeDate: $before
+                  videogameIds: $game
+                  regOpen: true
+                  addrState: $state
+                }
+              }) {
+                nodes {
+                  name
+                  venueAddress
+                  startAt
+                  primaryContact
+                  url
+                  numAttendees
+                }
+              }
+            }`;
+
+        const variables = {
+            cCode: country,
+            perPage: 200,
+            after: unixStartTime,
+            before: unixEndTime,
+            state: state,
+            game: game
+        };
+
+        if (!state) {
+            delete variables.state;
+            query = query.replace(/addrState: \$state,?/, "").replace(", $state: String", "");
+        }
+
+
+        let getTournaments = client.request(query, variables);
+
+        getTournaments.then((resData) => {
+
+            for (let i of resData.tournaments.nodes) {
+                const timestamp = i.startAt;
+                const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+                i.startAt = date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            }
+
+            tournaments = resData.tournaments.nodes;
+
+            if (tournaments.length === 0) {
+                return [];
+            }
+
+            tournaments = tournaments.filter(function (tournament) {
+                return minAttendees <= tournament['numAttendees'];
+            });
+
+            if (minAttendees !== 0) {
+                tournaments = tournaments.filter(item => item.numAttendees !== null && item.numAttendees !== undefined);
+            } else {
+                tournaments = tournaments.map(item => {
+                    if (item.numAttendees === null || item.numAttendees === undefined) {
+                        item.numAttendees = "unknown";
+                    }
+                    return item;
+                });
+            }
+
+
+            mapResult = tournaments;
+            noData = mapResult.length === 0;
+
+        });
+    }
+
     async function updateMap() {
         controller = new AbortController();
-        const signal = controller.signal;
         if (startDate === undefined || endDate === undefined) {
             alert("Please select a start and end date");
             return;
@@ -53,22 +159,13 @@
             requestData.state = state;
         }
 
+
         try {
             errorMessage = false;
             loading = true;
             noData = false;
             cancelled = false;
-            const response = await fetch('/update-map', {
-                signal,
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestData)
-            });
-
-            mapResult = await response.json();
-            noData = mapResult.length === 0;
+            await getData()
 
         } catch (error) {
             if (error.name === 'AbortError') {
@@ -80,12 +177,6 @@
         }
         loading = false;
         hasSearched = true;
-    }
-
-    function cancelRequest() {
-        if (controller) {
-            controller.abort();
-        }
     }
 </script>
 
