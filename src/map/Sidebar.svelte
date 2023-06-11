@@ -28,106 +28,15 @@
     let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
     let SMASH_GG_API_KEY = process.env.SMASH_GG_API_KEY;
 
-    async function getData() {
-        // todo: cancel button will not work now will haave to find a differnet way
-        if (minAttendees === undefined) {
-            minAttendees = 0;
-        }
+    let geolocator = new google.maps.Geocoder();
 
-        let tournaments;
-        let unixStartTime = new Date(`${startDate.slice(0, 4)}-${startDate.slice(5, 7)}-${startDate.slice(8, 10)}`);
-        let unixEndTime = new Date(`${endDate.slice(0, 4)}-${endDate.slice(5, 7)}-${endDate.slice(8, 10)}`);
-        unixStartTime = Math.floor(unixStartTime.getTime() / 1000);
-        unixEndTime = Math.floor(unixEndTime.getTime() / 1000);
-
-        const apiVersion = 'alpha';
-        const endpoint = 'https://api.start.gg/gql/' + apiVersion;
-        const client = new GraphQLClient(endpoint, {
-            headers: {
-                Authorization: 'Bearer ' + SMASH_GG_API_KEY,
-            },
-        });
-
-        let query = `
-            query TournamentsByCountry($cCode: String!, $perPage: Int!, $after: Timestamp!, $before: Timestamp, $state: String
-            $game: [ID]) {
-              tournaments(query: {
-                perPage: $perPage
-                filter: {
-                  countryCode: $cCode
-                  afterDate: $after
-                  beforeDate: $before
-                  videogameIds: $game
-                  regOpen: true
-                  addrState: $state
-                }
-              }) {
-                nodes {
-                  name
-                  venueAddress
-                  startAt
-                  primaryContact
-                  url
-                  numAttendees
-                }
-              }
-            }`;
-
-        const variables = {
-            cCode: country,
-            perPage: 200,
-            after: unixStartTime,
-            before: unixEndTime,
-            state: state,
-            game: game
-        };
-
-        if (!state) {
-            delete variables.state;
-            query = query.replace(/addrState: \$state,?/, "").replace(", $state: String", "");
-        }
-
-
-        let getTournaments = client.request(query, variables);
-
-        getTournaments.then((resData) => {
-
-            for (let i of resData.tournaments.nodes) {
-                const timestamp = i.startAt;
-                const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
-                i.startAt = date.toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric'
-                });
-            }
-
-            tournaments = resData.tournaments.nodes;
-
-            if (tournaments.length === 0) {
-                return [];
-            }
-
-            tournaments = tournaments.filter(function (tournament) {
-                return minAttendees <= tournament['numAttendees'];
-            });
-
-            if (minAttendees !== 0) {
-                tournaments = tournaments.filter(item => item.numAttendees !== null && item.numAttendees !== undefined);
+    async function geocode_address(address) {
+        return geolocator.geocode({'address': address}, function (results, status) {
+            if (status === 'OK') {
+                return results[0].geometry.location;
             } else {
-                tournaments = tournaments.map(item => {
-                    if (item.numAttendees === null || item.numAttendees === undefined) {
-                        item.numAttendees = "unknown";
-                    }
-                    return item;
-                });
+                alert('Geocode was not successful for the following reason: ' + status);
             }
-
-
-            mapResult = tournaments;
-            noData = mapResult.length === 0;
-
         });
     }
 
@@ -165,7 +74,124 @@
             loading = true;
             noData = false;
             cancelled = false;
-            await getData()
+
+            // todo: cancel button will not work now will haave to find a differnet way
+            if (minAttendees === undefined) {
+                minAttendees = 0;
+            }
+
+            let tournaments;
+            let unixStartTime = new Date(`${startDate.slice(0, 4)}-${startDate.slice(5, 7)}-${startDate.slice(8, 10)}`);
+            let unixEndTime = new Date(`${endDate.slice(0, 4)}-${endDate.slice(5, 7)}-${endDate.slice(8, 10)}`);
+            unixStartTime = Math.floor(unixStartTime.getTime() / 1000);
+            unixEndTime = Math.floor(unixEndTime.getTime() / 1000);
+
+            const apiVersion = 'alpha';
+            const endpoint = 'https://api.start.gg/gql/' + apiVersion;
+            const client = new GraphQLClient(endpoint, {
+                headers: {
+                    Authorization: 'Bearer ' + SMASH_GG_API_KEY,
+                },
+            });
+
+            let query = `
+            query TournamentsByCountry($cCode: String!, $perPage: Int!, $after: Timestamp!, $before: Timestamp, $state: String
+            $game: [ID]) {
+              tournaments(query: {
+                perPage: $perPage
+                filter: {
+                  countryCode: $cCode
+                  afterDate: $after
+                  beforeDate: $before
+                  videogameIds: $game
+                  regOpen: true
+                  addrState: $state
+                }
+              }) {
+                nodes {
+                  name
+                  venueAddress
+                  startAt
+                  primaryContact
+                  url
+                  numAttendees
+                }
+              }
+            }`;
+
+            const variables = {
+                cCode: country,
+                perPage: 200,
+                after: unixStartTime,
+                before: unixEndTime,
+                state: state,
+                game: game
+            };
+
+            if (!state) {
+                delete variables.state;
+                query = query.replace(/addrState: \$state,?/, "").replace(", $state: String", "");
+            }
+
+
+            let getTournaments = client.request(query, variables);
+
+            let locations = [];
+            getTournaments.then(async (resData) => {
+
+                for (let i of resData.tournaments.nodes) {
+                    const timestamp = i.startAt;
+                    const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+                    i.startAt = date.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                }
+
+                tournaments = resData.tournaments.nodes;
+
+                if (tournaments.length === 0) {
+                    return [];
+                }
+
+                tournaments = tournaments.filter(function (tournament) {
+                    return minAttendees <= tournament['numAttendees'];
+                });
+
+                if (minAttendees !== 0) {
+                    tournaments = tournaments.filter(item => item.numAttendees !== null && item.numAttendees !== undefined);
+                } else {
+                    tournaments = tournaments.map(item => {
+                        if (item.numAttendees === null || item.numAttendees === undefined) {
+                            item.numAttendees = "unknown";
+                        }
+                        return item;
+                    });
+                }
+
+
+                for (let i of tournaments) {
+                    let latlng = await geocode_address(i.venueAddress);
+                    latlng = latlng.results[0].geometry.location;
+                    if (latlng !== undefined) {
+                        locations.push(
+                            [i.name,
+                                latlng.lat(),
+                                latlng.lng(),
+                                i.primaryContact,
+                                i.venueAddress,
+                                i.url,
+                                i.startAt,
+                                i.numAttendees]);
+                    }
+                }
+                console.log(locations, locations.length);
+                mapResult = locations;
+                noData = mapResult.length === 0;
+            });
+
 
         } catch (error) {
             if (error.name === 'AbortError') {
