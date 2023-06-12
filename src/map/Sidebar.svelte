@@ -31,20 +31,15 @@
     let geolocator = new google.maps.Geocoder();
 
     async function geocode_address(address) {
-        try {
-            console.log(address)
-            return geolocator.geocode({'address': address}, function (results, status) {
-                if (status === 'OK') {
-                    return results[0].geometry.location;
-                } else {
-                    console.log(status);
-                    return undefined;
-                }
-            });
-        } catch (e) {
-            console.log(e);
-            return undefined;
-        }
+        console.log(address)
+        return geolocator.geocode({'address': address}, function (results, status) {
+            if (status === 'OK') {
+                return results[0].geometry.location;
+            } else {
+                console.log(status);
+                return undefined;
+            }
+        });
 
     }
 
@@ -179,9 +174,17 @@
 
 
             for (let i of tournaments) {
-                let latlng = await geocode_address(i.venueAddress);
-                latlng = latlng.results[0].geometry.location;
+                let latlng;
 
+                try {
+                    latlng = await geocode_address(i.venueAddress);
+
+                } catch (e) {
+                    console.log(e);
+                    continue;
+                }
+
+                latlng = latlng.results[0].geometry.location;
                 let url = "https://start.gg" + i.url;
 
                 if (latlng !== undefined) {
