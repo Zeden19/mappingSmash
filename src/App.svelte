@@ -82,12 +82,12 @@
         position: absolute;
         display: inline-block;
         font-family: Impact, serif;
-        font-size: 2em;
+        font-size: 2.3em;
         margin: 0;
         padding: 0;
         font-style: italic;
         text-align: center;
-        top: 11px;
+        top: 2px;
         color: black;
     }
 

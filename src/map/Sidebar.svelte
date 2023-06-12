@@ -29,9 +29,9 @@
 
 
     async function geocode_address(address) {
-        console.log(address)
         return geolocator.geocode({'address': address}, function (results, status) {
             if (status === 'OK') {
+                console.log(address);
                 return results[0].geometry.location;
             } else {
                 console.log(status);
@@ -61,17 +61,6 @@
             showShareDialog = true;
         }
 
-        const requestData = {
-            startDate,
-            endDate,
-            country,
-            minAttendees,
-            game
-        };
-
-        if (country === 'US' && state !== "all") {
-            requestData.state = state;
-        }
 
         try {
             errorMessage = false;
@@ -131,10 +120,12 @@
                 game: game
             };
 
-            if (!state) {
+            if (state === "all" || country !== "US") {
                 delete variables.state;
                 query = query.replace(/addrState: \$state,?/, "").replace(", $state: String", "");
             }
+
+            console.log(variables);
 
             // idk how this works, but adding await here fixed most of my problems
             if (signal.aborted) {
@@ -207,12 +198,7 @@
                             i.numAttendees]);
                 }
             }
-
-
-            console.log(locations, locations.length);
             mapResult = locations;
-
-
         } catch (error) {
             if (error.name === 'AbortError') {
                 cancelled = true;
