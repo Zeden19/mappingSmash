@@ -53,6 +53,7 @@ export default {
             process: JSON.stringify({
                 env: {
                     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+                    SMASH_GG_API_KEY: process.env.SMASH_GG_API_KEY,
                 },
             }),
             preventAssignment: true,

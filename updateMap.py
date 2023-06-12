@@ -65,7 +65,6 @@ def updateMap(startTime, endTime, country, numAttendees, game, state=None):
     client = GraphQLClient('https://api.start.gg/gql/' + apiVersion)
     client.inject_token('Bearer ' + authToken)
     game = game.split(' ')
-    print(game, type(game))
 
     # start.gg code
     query = '''

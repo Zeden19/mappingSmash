@@ -5,6 +5,7 @@
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8">
     import {slide} from 'svelte/transition';
     import TwitterShare from './TwitterShare.svelte';
+    import {GraphQLClient} from 'graphql-request';
 
     const todayString = new Date().toISOString().split('T')[0];
     export let mapResult;
@@ -15,18 +16,37 @@
     export let state;
     export let game;
 
-    let controller;
-    let hasSearched = false;
     export let showShareDialog = false;
-
     let loading = false;
     let errorMessage = false;
     let noData = false;
     let cancelled = false;
+    let hasSearched = false;
 
+    let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+    let SMASH_GG_API_KEY = process.env.SMASH_GG_API_KEY;
+    let geolocator = new google.maps.Geocoder();
+
+
+    async function geocode_address(address) {
+        console.log(address)
+        return geolocator.geocode({'address': address}, function (results, status) {
+            if (status === 'OK') {
+                return results[0].geometry.location;
+            } else {
+                console.log(status);
+                return undefined;
+            }
+        });
+
+    }
+
+    let abortController;
+    // I think im going to hell for this function
     async function updateMap() {
-        controller = new AbortController();
-        const signal = controller.signal;
+        abortController = new AbortController();
+        let signal = abortController.signal;
+
         if (startDate === undefined || endDate === undefined) {
             alert("Please select a start and end date");
             return;
@@ -58,17 +78,140 @@
             loading = true;
             noData = false;
             cancelled = false;
-            const response = await fetch('/update-map', {
-                signal,
-                method: 'POST',
+
+            if (minAttendees === undefined) {
+                minAttendees = 0;
+            }
+
+            let tournaments;
+            let unixStartTime = new Date(`${startDate.slice(0, 4)}-${startDate.slice(5, 7)}-${startDate.slice(8, 10)}`);
+            let unixEndTime = new Date(`${endDate.slice(0, 4)}-${endDate.slice(5, 7)}-${endDate.slice(8, 10)}`);
+            unixStartTime = Math.floor(unixStartTime.getTime() / 1000);
+            unixEndTime = Math.floor(unixEndTime.getTime() / 1000);
+
+            const apiVersion = 'alpha';
+            const endpoint = 'https://api.start.gg/gql/' + apiVersion;
+            const client = new GraphQLClient(endpoint, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: 'Bearer ' + SMASH_GG_API_KEY,
                 },
-                body: JSON.stringify(requestData)
             });
 
-            mapResult = await response.json();
-            noData = mapResult.length === 0;
+            let query = `
+            query TournamentsByCountry($cCode: String!, $perPage: Int!, $after: Timestamp!, $before: Timestamp, $state: String
+            $game: [ID]) {
+              tournaments(query: {
+                perPage: $perPage
+                filter: {
+                  countryCode: $cCode
+                  afterDate: $after
+                  beforeDate: $before
+                  videogameIds: $game
+                  regOpen: true
+                  addrState: $state
+                }
+              }) {
+                nodes {
+                  name
+                  venueAddress
+                  startAt
+                  primaryContact
+                  url
+                  numAttendees
+                }
+              }
+            }`;
+
+            const variables = {
+                cCode: country,
+                perPage: 200,
+                after: unixStartTime,
+                before: unixEndTime,
+                state: state,
+                game: game
+            };
+
+            if (!state) {
+                delete variables.state;
+                query = query.replace(/addrState: \$state,?/, "").replace(", $state: String", "");
+            }
+
+            // idk how this works, but adding await here fixed most of my problems
+            if (signal.aborted) {
+                return;
+            }
+            let resData = await client.request(query, variables);
+            let locations = [];
+
+            for (let i of resData.tournaments.nodes) {
+                const timestamp = i.startAt;
+                const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+                i.startAt = date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            }
+
+            tournaments = resData.tournaments.nodes;
+
+            if (tournaments.length === 0) {
+                noData = true;
+                loading = false;
+                return;
+            }
+
+            tournaments = tournaments.filter(function (tournament) {
+                return minAttendees <= tournament['numAttendees'];
+            });
+
+            if (minAttendees !== 0) {
+                tournaments = tournaments.filter(item => item.numAttendees !== null && item.numAttendees !== undefined);
+            } else {
+                tournaments = tournaments.map(item => {
+                    if (item.numAttendees === null || item.numAttendees === undefined) {
+                        item.numAttendees = "unknown";
+                    }
+                    return item;
+                });
+            }
+
+            for (let i of tournaments) {
+                let latlng;
+
+                if (cancelled) {
+                    return;
+                }
+
+                try {
+                    latlng = await geocode_address(i.venueAddress);
+
+                } catch (e) {
+                    console.log(e);
+                    continue;
+                }
+
+                latlng = latlng.results[0].geometry.location;
+                let url = "https://start.gg" + i.url;
+
+                if (latlng !== undefined) {
+                    locations.push(
+                        [i.name,
+                            latlng.lat(),
+                            latlng.lng(),
+                            i.primaryContact,
+                            i.venueAddress,
+                            url,
+                            i.startAt,
+                            i.numAttendees]);
+                }
+            }
+
+
+            console.log(locations, locations.length);
+            mapResult = locations;
+
 
         } catch (error) {
             if (error.name === 'AbortError') {
@@ -83,9 +226,9 @@
     }
 
     function cancelRequest() {
-        if (controller) {
-            controller.abort();
-        }
+        abortController.abort();
+        loading = false;
+        cancelled = true;
     }
 </script>
 
