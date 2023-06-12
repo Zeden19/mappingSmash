@@ -16,19 +16,17 @@
     export let state;
     export let game;
 
-    let controller;
-    let hasSearched = false;
     export let showShareDialog = false;
-
     let loading = false;
     let errorMessage = false;
     let noData = false;
     let cancelled = false;
+    let hasSearched = false;
 
     let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
     let SMASH_GG_API_KEY = process.env.SMASH_GG_API_KEY;
-
     let geolocator = new google.maps.Geocoder();
+
 
     async function geocode_address(address) {
         console.log(address)
@@ -43,8 +41,12 @@
 
     }
 
+    let abortController;
+    // I think im going to hell for this function
     async function updateMap() {
-        controller = new AbortController();
+        abortController = new AbortController();
+        let signal = abortController.signal;
+
         if (startDate === undefined || endDate === undefined) {
             alert("Please select a start and end date");
             return;
@@ -71,14 +73,12 @@
             requestData.state = state;
         }
 
-
         try {
             errorMessage = false;
             loading = true;
             noData = false;
             cancelled = false;
 
-            // todo: cancel button will not work now will haave to find a differnet way
             if (minAttendees === undefined) {
                 minAttendees = 0;
             }
@@ -137,6 +137,9 @@
             }
 
             // idk how this works, but adding await here fixed most of my problems
+            if (signal.aborted) {
+                return;
+            }
             let resData = await client.request(query, variables);
             let locations = [];
 
@@ -152,7 +155,6 @@
             }
 
             tournaments = resData.tournaments.nodes;
-            console.log(tournaments);
 
             if (tournaments.length === 0) {
                 noData = true;
@@ -175,11 +177,12 @@
                 });
             }
 
-
-
-
             for (let i of tournaments) {
                 let latlng;
+
+                if (cancelled) {
+                    return;
+                }
 
                 try {
                     latlng = await geocode_address(i.venueAddress);
@@ -204,6 +207,8 @@
                             i.numAttendees]);
                 }
             }
+
+
             console.log(locations, locations.length);
             mapResult = locations;
 
@@ -218,6 +223,12 @@
         }
         loading = false;
         hasSearched = true;
+    }
+
+    function cancelRequest() {
+        abortController.abort();
+        loading = false;
+        cancelled = true;
     }
 </script>
 
