@@ -31,13 +31,21 @@
     let geolocator = new google.maps.Geocoder();
 
     async function geocode_address(address) {
-        return geolocator.geocode({'address': address}, function (results, status) {
-            if (status === 'OK') {
-                return results[0].geometry.location;
-            } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-            }
-        });
+        try {
+            console.log(address)
+            return geolocator.geocode({'address': address}, function (results, status) {
+                if (status === 'OK') {
+                    return results[0].geometry.location;
+                } else {
+                    console.log(status);
+                    return undefined;
+                }
+            });
+        } catch (e) {
+            console.log(e);
+            return undefined;
+        }
+
     }
 
     async function updateMap() {
@@ -133,64 +141,64 @@
                 query = query.replace(/addrState: \$state,?/, "").replace(", $state: String", "");
             }
 
-
-            let getTournaments = client.request(query, variables);
-
+            // idk how this works, but adding await here fixed most of my problems
+            let resData = await client.request(query, variables);
             let locations = [];
-            getTournaments.then(async (resData) => {
 
-                for (let i of resData.tournaments.nodes) {
-                    const timestamp = i.startAt;
-                    const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
-                    i.startAt = date.toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric'
-                    });
-                }
-
-                tournaments = resData.tournaments.nodes;
-
-                if (tournaments.length === 0) {
-                    return [];
-                }
-
-                tournaments = tournaments.filter(function (tournament) {
-                    return minAttendees <= tournament['numAttendees'];
+            for (let i of resData.tournaments.nodes) {
+                const timestamp = i.startAt;
+                const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+                i.startAt = date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
                 });
+            }
 
-                if (minAttendees !== 0) {
-                    tournaments = tournaments.filter(item => item.numAttendees !== null && item.numAttendees !== undefined);
-                } else {
-                    tournaments = tournaments.map(item => {
-                        if (item.numAttendees === null || item.numAttendees === undefined) {
-                            item.numAttendees = "unknown";
-                        }
-                        return item;
-                    });
-                }
+            tournaments = resData.tournaments.nodes;
 
+            if (tournaments.length === 0) {
+                return [];
+            }
 
-                for (let i of tournaments) {
-                    let latlng = await geocode_address(i.venueAddress);
-                    latlng = latlng.results[0].geometry.location;
-                    if (latlng !== undefined) {
-                        locations.push(
-                            [i.name,
-                                latlng.lat(),
-                                latlng.lng(),
-                                i.primaryContact,
-                                i.venueAddress,
-                                i.url,
-                                i.startAt,
-                                i.numAttendees]);
-                    }
-                }
-                console.log(locations, locations.length);
-                mapResult = locations;
-                noData = mapResult.length === 0;
+            tournaments = tournaments.filter(function (tournament) {
+                return minAttendees <= tournament['numAttendees'];
             });
+
+            if (minAttendees !== 0) {
+                tournaments = tournaments.filter(item => item.numAttendees !== null && item.numAttendees !== undefined);
+            } else {
+                tournaments = tournaments.map(item => {
+                    if (item.numAttendees === null || item.numAttendees === undefined) {
+                        item.numAttendees = "unknown";
+                    }
+                    return item;
+                });
+            }
+
+
+            for (let i of tournaments) {
+                let latlng = await geocode_address(i.venueAddress);
+                latlng = latlng.results[0].geometry.location;
+
+                let url = "https://start.gg" + i.url;
+
+                if (latlng !== undefined) {
+                    locations.push(
+                        [i.name,
+                            latlng.lat(),
+                            latlng.lng(),
+                            i.primaryContact,
+                            i.venueAddress,
+                            url,
+                            i.startAt,
+                            i.numAttendees]);
+                }
+            }
+            console.log(locations, locations.length);
+            mapResult = locations;
+            noData = mapResult.length === 0;
 
 
         } catch (error) {
