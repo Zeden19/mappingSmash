@@ -152,9 +152,12 @@
             }
 
             tournaments = resData.tournaments.nodes;
+            console.log(tournaments);
 
             if (tournaments.length === 0) {
-                return [];
+                noData = true;
+                loading = false;
+                return;
             }
 
             tournaments = tournaments.filter(function (tournament) {
@@ -171,6 +174,8 @@
                     return item;
                 });
             }
+
+
 
 
             for (let i of tournaments) {
@@ -201,7 +206,6 @@
             }
             console.log(locations, locations.length);
             mapResult = locations;
-            noData = mapResult.length === 0;
 
 
         } catch (error) {
