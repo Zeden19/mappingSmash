@@ -11,26 +11,34 @@
     export let country;
     export let minAttendees = 0;
     export let showShareDialog;
+
+    export let activePage;
 </script>
-
-
 
 <body>
 <div>
     {#if ready}
         <Map bind:mapResult/>
         <Filter bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:showShareDialog/>
-        <Help/>
+        <Help bind:activePage/>
         <Legend/>
     {/if}
 </div>
 
 <footer style="height: 30px; display:block;">
-    <p style="text-align: center">Created by: Sleepy </p>
+    <p style="text-align: center; color: white">Created by: <a href="https://twitter.com/ZedenZeder">Sleepy</a></p>
 </footer>
 </body>
 
 <style>
+
+    a {
+        color: #999999;
+    }
+
+    a:hover {
+        color: #cccccc;
+    }
 
     * {
         margin: 0;
@@ -45,13 +53,15 @@
     }
 
     footer {
-        background: #444444;
+        background: #333333;
+        height: 5%;
     }
 
     body {
         margin: 0;
         padding: 0;
         overflow: hidden;
+        height: 100%;
     }
 
     dialog::backdrop {

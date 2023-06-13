@@ -35,9 +35,9 @@
     </nav>
 
     {#if activePage === 'map'}
-        <MapPage bind:ready bind:startDate bind:endDate bind:country bind:minAttendees/>
+        <MapPage bind:activePage bind:ready bind:startDate bind:endDate bind:country bind:minAttendees/>
     {:else if activePage === 'about'}
-        <AboutPage/>
+        <AboutPage bind:activePage/>
     {:else if activePage === 'contact'}
         <ContactPage/>
     {/if}
@@ -55,6 +55,7 @@
     nav {
         background-color: #444444;
         padding: 10px;
+        height: 4%;
     }
 
     ul {
@@ -82,18 +83,19 @@
         position: absolute;
         display: inline-block;
         font-family: Impact, serif;
-        font-size: 2em;
+        font-size: 2.3em;
         margin: 0;
         padding: 0;
         font-style: italic;
         text-align: center;
-        top: 11px;
+        top: 2px;
         color: black;
     }
 
     main {
         margin: 0;
         padding: 0;
+        height: 95%;
     }
 
 </style>

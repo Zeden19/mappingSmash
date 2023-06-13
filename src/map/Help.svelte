@@ -1,5 +1,6 @@
 <script>
     import {slide} from 'svelte/transition';
+    export let activePage;
 
 </script>
 
@@ -23,6 +24,8 @@
         Clicking on the "legend" button on the right will show what the colors of the markers mean. <br><br>
 
         I hope you enjoy using this website! <br><br>
+        
+        Found a bug? <a style="cursor: pointer" on:click={() => activePage="contact"}>Contact</a> me
     </p>
     <button onclick="help_dialog.close()">Close</button>
 </dialog>
