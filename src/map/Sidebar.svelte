@@ -7,9 +7,10 @@
     import TwitterShare from './TwitterShare.svelte';
     import {GraphQLClient} from 'graphql-request';
 
-    const todayString = new Date().toISOString().split('T')[0];
+    let todayString = new Date();
     export let mapResult;
     export let startDate = todayString;
+    todayString = startDate;
     export let endDate;
     export let country;
     export let minAttendees = 0;
@@ -26,6 +27,8 @@
     let GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
     let SMASH_GG_API_KEY = process.env.SMASH_GG_API_KEY;
     let geolocator = new google.maps.Geocoder();
+
+    const EST_OFFSET = -5 * 60;
 
 
     async function geocode_address(address) {
@@ -61,7 +64,6 @@
             showShareDialog = true;
         }
 
-
         try {
             errorMessage = false;
             loading = true;
@@ -73,8 +75,9 @@
             }
 
             let tournaments;
-            let unixStartTime = new Date(`${startDate.slice(0, 4)}-${startDate.slice(5, 7)}-${startDate.slice(8, 10)}`);
-            let unixEndTime = new Date(`${endDate.slice(0, 4)}-${endDate.slice(5, 7)}-${endDate.slice(8, 10)}`);
+            let unixStartTime = new Date(startDate.replace(/-/g, "/").replace("T", " "));
+            let unixEndTime = new Date(endDate.replace(/-/g, "/").replace("T", " "));
+            unixEndTime.setHours(23, 59, 59);
             unixStartTime = Math.floor(unixStartTime.getTime() / 1000);
             unixEndTime = Math.floor(unixEndTime.getTime() / 1000);
 

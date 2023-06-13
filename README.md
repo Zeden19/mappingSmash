@@ -30,4 +30,5 @@
 <li>A proper tutorial</li>
 
 <h2>Bugs</h2>
-<li>Clicking /li>
+<li>Google Pixel bug (i have no idea lmao)/li>
+<li>Timezones are weird</li>
