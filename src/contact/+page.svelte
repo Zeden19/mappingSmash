@@ -2,8 +2,13 @@
     import TwitterFollow from "./TwitterFollow.svelte";
     import MailTo from "./MailTo.svelte";
 </script>
+<svelte:head>
+    <title>Smash Mapping: Contact</title>
+</svelte:head>
+
 <body>
 <h2>Contact</h2>
+
 
 <div>
     <img alt="reimu-gif" class="reimu" src="reimu.gif">

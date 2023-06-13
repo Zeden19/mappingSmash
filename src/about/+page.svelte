@@ -4,6 +4,10 @@
 </script>
 
 
+<svelte:head>
+    <title>Smash Mapping: About</title>
+</svelte:head>
+
 <body>
 <h2>About</h2>
 

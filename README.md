@@ -28,3 +28,6 @@
 <li>More game selection (with multiple game selection)</li>
 <li>Add 1 time dialog box to thank user for using my website, and to share my website on social media</li>
 <li>A proper tutorial</li>
+
+<h2>Bugs</h2>
+<li>Clicking /li>

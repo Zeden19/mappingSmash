@@ -15,6 +15,10 @@
     export let activePage;
 </script>
 
+<svelte:head>
+    <title>Smash Mapping: Map</title>
+</svelte:head>
+
 <body>
 <div>
     {#if ready}

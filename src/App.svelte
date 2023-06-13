@@ -21,6 +21,7 @@
     <script defer async
             src={`https://maps.googleapis.com/maps/api/js?key=${map_key}&callback=initMap`}>
     </script>
+    <script defer src="/_vercel/insights/script.js"></script>
     <title>Smash Mapping: Map</title>
 </svelte:head>
 
