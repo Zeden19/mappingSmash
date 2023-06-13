@@ -37,7 +37,6 @@ But this doesn't only help individuals looking for tournaments, it also helps <b
 
 
 <style>
-
     h2 {
         text-align: center;
         font-family: 'Impact', sans-serif;
