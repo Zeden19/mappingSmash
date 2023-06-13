@@ -7,8 +7,6 @@
     import MapPage from "./map/+page.svelte";
     import ContactPage from "./contact/+page.svelte";
 
-    import {MetaTags} from "svelte-meta-tags";
-
     export let activePage = 'map';
     export let ready;
     export let startDate = new Date().toISOString().split('T')[0];
@@ -18,38 +16,6 @@
 
     let map_key = process.env.GOOGLE_MAPS_API_KEY;
 </script>
-
-
-<MetaTags
-    title="Smash Mapping"
-    description="A map that shows where Super Smash Bros. E-sports tournaments are being held."
-    canonical="https://www.smash-mapping.com/"
-    openGraph={{
-        url: 'https://www.smash-mapping.com/',
-        title: 'Smash Mapping',
-        description: 'A map that shows where Super Smash Bros. E-sports tournaments are being held.',
-        images: [
-            {
-                url: 'https://www.smash-mapping.com/example-image.png',
-                width: 800,
-                height: 600,
-                alt: 'Map of Smash Bros. tournaments',
-            }
-        ],
-        site_name: 'Smash Mapping',
-    }}
-
-    twitter={{
-        handle: '@smash-mapping',
-        site: '@smash-mapping',
-        cardType: 'summary_large_image',
-        title: 'Smash Mapping',
-        description: 'A map that shows where Super Smash Bros. E-sports tournaments are being held.',
-        image: 'https://www.smash-mapping.com/example-image.png',
-        imageAlt: 'Map of Smash Bros. tournaments',
-    }}
-    >
-</MetaTags>
 
 <svelte:head>
     <script defer async
@@ -61,9 +27,9 @@
 <main>
     <nav>
         <ul>
-            <li><a on:click={() => activePage = 'map'} href="#map">Home</a></li>
-            <li><a on:click={() => activePage = 'about'} href="#about">About</a></li>
-            <li><a on:click={() => activePage = 'contact'} href="#contact">Contact</a></li>
+            <li><a on:click={() => activePage = 'map'} href="#">Home</a></li>
+            <li><a on:click={() => activePage = 'about'} href="#">About</a></li>
+            <li><a on:click={() => activePage = 'contact'} href="#">Contact</a></li>
         </ul>
         <h2>Smash Mapping</h2>
     </nav>

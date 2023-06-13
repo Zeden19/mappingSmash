@@ -4,7 +4,7 @@
 
 
 <div on:click={() => window.open("mailto:ashar562@uwo.ca")}>
-    <img src="outlook.png">
+    <img alt="outlook" src="outlook.png">
     <a target="_blank" href="mailto:ashar562@uwo.ca">Mail</a>
 </div>
 
