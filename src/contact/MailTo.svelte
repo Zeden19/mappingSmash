@@ -3,7 +3,7 @@
 </script>
 
 
-<div>
+<div on:click={() => window.open("mailto:ashar562@uwo.ca")}>
     <img src="outlook.png">
     <a target="_blank" href="mailto:ashar562@uwo.ca">Mail</a>
 </div>
@@ -32,10 +32,10 @@
     div:hover {
         background-color: #002844FF;
     }
+
     img {
         justify-content: left;
         margin-right: 19px;
-
     }
 
 </style>

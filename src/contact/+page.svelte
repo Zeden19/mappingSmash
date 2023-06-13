@@ -6,12 +6,15 @@
 <h2>Contact</h2>
 
 <div>
+    <img alt="reimu-gif" class="reimu" src="reimu.gif">
+
     <p>Below you'll find links to contact me, please contact if you have bug reports, suggestions, or any other
         inquiries.</p>
     <br>
 
     <p>Twitter is my main form of contact, and its also where I post development updates, but you're more than welcome
-    to contact me with any of the other methods</p>
+        to contact me with any of the other methods</p>
+
 
     <div class="share-buttons">
         <TwitterFollow/>
@@ -71,5 +74,9 @@
         align-items: center;
         border: none;
         gap: 10px;
+    }
+
+    .reimu {
+        border: none;
     }
 </style>
