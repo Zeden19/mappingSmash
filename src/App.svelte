@@ -22,6 +22,12 @@
             src={`https://maps.googleapis.com/maps/api/js?key=${map_key}&callback=initMap`}>
     </script>
     <title>Smash Mapping: Map</title>
+    <meta property="og:locate" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Smash Mapping">
+    <meta property="og:description" content="A map that shows where Super Smash Bros. E-sports tournaments are being held.">
+    <meta property="og:url" content="https://www.smash-mapping.com/">
+    <meta property="og:image" content="example-image.png">
 </svelte:head>
 
 <main>
