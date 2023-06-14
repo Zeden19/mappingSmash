@@ -19,8 +19,8 @@
         border-radius: 30px;
         display: inline-block;
         padding: 0 15px;
-        width: 75px;
-        height: 35px;
+        width: 5em;
+        height: 2.2em;
         line-height: 2;
     }
 

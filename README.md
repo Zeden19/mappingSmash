@@ -18,7 +18,8 @@
 <s><li>Add Attendees to Info</li></s>
 <s><li>Link to google maps when clicking on address</li></s>
 <s><li>Help Screen</li></s>
-<li>Fix date (For some reason its ahead by 1 day, mayb cause of timezone issues)</li>
+<s><li>Fix date (For some reason its ahead by 1 day, mayb cause of timezone issues)</li></s>
+<li>Thank ABB</li>
 
 
 <h2>Bigger Features:</h2>
@@ -31,4 +32,4 @@
 
 <h2>Bugs</h2>
 <li>Google Pixel bug (i have no idea lmao)/li>
-<li>Timezones are weird</li>
+<s><li>Timezones are weird</li></s>

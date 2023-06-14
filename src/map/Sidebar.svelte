@@ -16,6 +16,7 @@
     export let minAttendees = 0;
     export let state;
     export let game;
+    export let open;
 
     export let showShareDialog = false;
     let loading = false;
@@ -41,8 +42,8 @@
                 return undefined;
             }
         });
-
     }
+
 
     let abortController;
     // I think im going to hell for this function
@@ -212,6 +213,8 @@
         }
         loading = false;
         hasSearched = true;
+        open = false;
+
     }
 
     function cancelRequest() {
@@ -329,7 +332,7 @@
         <input min="{startDate}" bind:value={endDate} type="date">
     </label>
 
-    <label>Min Attendees:
+    <label>Attendees:
         <input type="number" min="0" bind:value={minAttendees}>
     </label>
 
@@ -357,8 +360,8 @@
 
 <style>
     aside {
-        width: 13em;
-        height: 78%;
+        width: 12rem;
+        height: 55vh;
         overflow: hidden;
         display: block;
         background-color: #f2f2f2;
@@ -381,15 +384,25 @@
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 15px;
         margin-top: 5px;
     }
 
     input {
         font-family: Oswald, sans-serif;
         margin-left: 2px;
-        font-size: 14px;
+        font-size: 1em;
+    }
 
+    select {
+        font-family: Oswald, sans-serif;
+        margin-left: 2px;
+        font-size: 1em;
+    }
+
+    label {
+        font-family: Oswald, sans-serif;
+        margin-left: 2px;
+        font-size: 1em;
     }
 
     button:hover {
@@ -410,8 +423,8 @@
     }
 
     dialog {
-        height: 25%;
-        width: 30%;
+        height: fit-content(100%);
+        width: 16em;
         text-align: center;
         border: 5px solid black;
         border-radius: 10px;

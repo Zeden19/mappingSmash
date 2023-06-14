@@ -20,10 +20,6 @@
     let details = navigator.userAgent;
     let regexp = /android|iphone|kindle|ipad/i;
     let isMobileDevice = regexp.test(details);
-
-    if (isMobileDevice) {
-        activePage = 'mobile';
-    }
 </script>
 
 <svelte:head>
@@ -36,12 +32,16 @@
 
 <main>
     <nav id="nav">
-        <ul>
+
+        {#if !isMobileDevice}
+            <h2>Smash Mapping</h2>
+        {/if}
+
+        <ul id="navigation">
             <li><a on:click={() => activePage = 'map'} href="#">Home</a></li>
             <li><a on:click={() => activePage = 'about'} href="#">About</a></li>
             <li><a on:click={() => activePage = 'contact'} href="#">Contact</a></li>
         </ul>
-        <h2>Smash Mapping</h2>
     </nav>
 
     {#if activePage === 'map'}
@@ -50,18 +50,11 @@
         <AboutPage bind:activePage/>
     {:else if activePage === 'contact'}
         <ContactPage/>
-    {:else if activePage === 'mobile'}
-         <script>
-              document.getElementById('nav').style.display = 'none';
-         </script>
-        <Mobile/>
-
     {/if}
 </main>
 
 <style>
     nav a {
-        display: inline-block;
         padding: 0 1em;
         text-decoration: none;
         color: black;
@@ -72,11 +65,17 @@
         background-color: #444444;
         padding: 10px;
         height: 4%;
+        display: flex;
+        align-items: center;
     }
 
     ul {
         list-style-type: none;
-        display: inline;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow: hidden;
+        padding-inline-start: 0;
+        justify-content: right;
     }
 
     li {
@@ -85,10 +84,10 @@
         background: #888888;
         margin-inline: 10px;
         padding: 2px;
-    }
-
-    li:last-child {
-        margin-right: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-radius: 10px;
     }
 
     li:hover {
@@ -96,15 +95,12 @@
     }
 
     h2 {
-        position: absolute;
-        display: inline-block;
         font-family: Impact, serif;
         font-size: 2.3em;
+        padding-right: 15%;
+        padding-left: 2%;
         margin: 0;
-        padding: 0;
         font-style: italic;
-        text-align: center;
-        top: 2px;
         color: black;
     }
 

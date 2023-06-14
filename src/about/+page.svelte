@@ -18,15 +18,15 @@
     <br><br>
 
 
-<img height="70%" width="65%" src="example-image.png"
-        alt="example-image">
+    <img height="70%" width="65%" src="example-image.png"
+         alt="example-image">
     At Smash Mapping, the goal is to make finding in-person tournaments far easier than current methods. Smash Mapping
     physically maps tournaments that are listed on <a target="_blank" href="https://www.start.gg/">Start.gg</a> so you
     can easily see what tournaments are near you. By using the filters, you can easily search for tournaments that you
     specifically want, when you want. <br><br>
 
 
-But this doesn't only help individuals looking for tournaments, it also helps <b>tournament organizers</b>. The
+    But this doesn't only help individuals looking for tournaments, it also helps <b>tournament organizers</b>. The
     whole reason
     why its so hard to find tournaments is because organizers don't have a good way to show their tournaments to the
     public.
@@ -44,24 +44,25 @@ But this doesn't only help individuals looking for tournaments, it also helps <b
     h2 {
         text-align: center;
         font-family: 'Impact', sans-serif;
-        font-size: 50px;
+        font-size: 3em;
         color: black;
         font-style: italic;
         background-color: #999;
-        margin: 0 230px;
+        margin: 0 2em;
         padding: 10px;
         border-top: grey 10px solid;
     }
 
     p {
         text-align: left;
-        font-size: 17px;
+        font-size: 1em;
         color: black;
         background-color: #cccccc;
         border: black solid 2px;
         height: fit-content(100%);
         padding: 10px;
-        margin: 10px 200px;
+        margin: 10px 1em;
+        overflow: hidden;
     }
 
     img {
@@ -73,6 +74,7 @@ But this doesn't only help individuals looking for tournaments, it also helps <b
 
     body {
         background-color: gray;
+        height: fit-content(100%);
     }
 
     * {

@@ -9,7 +9,7 @@
     <button onclick="help_dialog.showModal()">Help</button>
 </div>
 
-<dialog style="width: 30%" id="help_dialog">
+<dialog id="help_dialog">
     <p>Hi there, thanks for visiting! <br><br>
 
         This website is a tool that allows individuals to find in-person Melee and Ultimate tournaments easier. <br><br>
@@ -57,6 +57,8 @@
     dialog {
         border-radius: 10px;
         border: 5px solid black;
+        width: 60%;
+        height: fit-content(100%);
     }
 
     dialog::backdrop {
