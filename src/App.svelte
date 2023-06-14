@@ -6,6 +6,7 @@
     import AboutPage from "./about/+page.svelte";
     import MapPage from "./map/+page.svelte";
     import ContactPage from "./contact/+page.svelte";
+    import Mobile from "./mobile/Mobile.svelte";
 
     export let activePage = 'map';
     export let ready;
@@ -15,6 +16,14 @@
     export let minAttendees = 0;
 
     let map_key = process.env.GOOGLE_MAPS_API_KEY;
+
+    let details = navigator.userAgent;
+    let regexp = /android|iphone|kindle|ipad/i;
+    let isMobileDevice = regexp.test(details);
+
+    if (isMobileDevice) {
+        activePage = 'mobile';
+    }
 </script>
 
 <svelte:head>
@@ -26,7 +35,7 @@
 </svelte:head>
 
 <main>
-    <nav>
+    <nav id="nav">
         <ul>
             <li><a on:click={() => activePage = 'map'} href="#">Home</a></li>
             <li><a on:click={() => activePage = 'about'} href="#">About</a></li>
@@ -41,6 +50,12 @@
         <AboutPage bind:activePage/>
     {:else if activePage === 'contact'}
         <ContactPage/>
+    {:else if activePage === 'mobile'}
+         <script>
+              document.getElementById('nav').style.display = 'none';
+         </script>
+        <Mobile/>
+
     {/if}
 </main>
 
