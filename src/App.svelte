@@ -45,7 +45,7 @@
     </nav>
 
     {#if activePage === 'map'}
-        <MapPage bind:isMobileDevice bind:activePage bind:ready bind:startDate bind:endDate bind:country bind:minAttendees/>
+        <MapPage bind:activePage bind:ready bind:startDate bind:endDate bind:country bind:minAttendees/>
     {:else if activePage === 'about'}
         <AboutPage bind:activePage/>
     {:else if activePage === 'contact'}

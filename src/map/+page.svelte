@@ -1,6 +1,6 @@
 <script xmlns="http://www.w3.org/1999/html">
     import Map from "./Map.svelte";
-    import Search from "./Search.svelte";
+    import Filter from "./Filter.svelte";
     import Legend from "./Legend.svelte";
     import Help from "./Help.svelte";
 
@@ -13,8 +13,6 @@
     export let showShareDialog;
 
     export let activePage;
-
-
 </script>
 
 <svelte:head>
@@ -25,12 +23,10 @@
 <div>
     {#if ready}
         <Map bind:mapResult/>
-        <Search bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees
-                bind:showShareDialog/>
+        <Filter bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:showShareDialog/>
         <Help bind:activePage/>
         <Legend/>
     {/if}
-
 </div>
 
 <footer style="height: 30px; display:block;">
@@ -58,7 +54,6 @@
         text-align: center;
         border: gray solid 5px;
         height: 90vh;
-        position: relative;
     }
 
     footer {

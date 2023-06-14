@@ -1,5 +1,5 @@
 <script>
-    export let activePagel
+    export let activePage;
 
 </script>
 
