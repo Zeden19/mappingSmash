@@ -92,7 +92,10 @@
     {/if}
 
     {#if isMobileDevice}
-        <script>document.getElementById("sidebar").style.top = "94%";</script>
+        <script>
+            document.getElementById("sidebar").style.top = "15%";
+            document.getElementById("sidebar").style.left = "0.3%";
+        </script>
     {/if}
 </div>
 
@@ -106,7 +109,6 @@
         border-radius: 20%;
         height: 40px;
     }
-
 
     .marker {
         display: flex;

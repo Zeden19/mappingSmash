@@ -34,8 +34,8 @@
 
     {#if isMobileDevice}
         <script>
-            document.getElementById("help-button").style.top = "94%";
-            document.getElementById("help-button").style.right = "40%";
+            document.getElementById("help-button").style.top = "21%";
+            document.getElementById("help-button").style.left = "0.3%";
         </script>
     {/if}
 </dialog>
