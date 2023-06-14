@@ -296,6 +296,11 @@
             <option value="US">USA</option>
             <option value="MX">Mexico</option>
             <option value="JP">Japan</option>
+            <option value="FR">France</option>
+            <option value="DE">Germany</option>
+            <option value="GB">United Kingdom</option>
+            <option value="ES">Spain</option>
+            <option value="CH">Switzerland</option>
         </select>
     </label>
 
