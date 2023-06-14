@@ -72,12 +72,13 @@
             loading = true;
             noData = false;
             cancelled = false;
+            showWarningDialog = false;
 
             if (minAttendees === undefined) {
                 minAttendees = 0;
             }
 
-            let tournaments;
+            let tournaments = [];
             let unixStartTime = new Date(startDate.replace(/-/g, "/").replace("T", " "));
             let unixEndTime = new Date(endDate.replace(/-/g, "/").replace("T", " "));
             unixEndTime.setHours(23, 59, 59);
@@ -143,6 +144,9 @@
             let resData = await client.request(query, variables);
             let locations = [];
 
+            tournaments = resData.tournaments.nodes;
+            console.log(tournaments);
+
             for (let i of resData.tournaments.nodes) {
                 const timestamp = i.startAt;
                 const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
@@ -154,7 +158,10 @@
                 });
             }
 
-            tournaments = resData.tournaments.nodes;
+
+            tournaments = tournaments.filter(function (tournament) {
+                return minAttendees <= tournament['numAttendees'];
+            });
 
             if (tournaments.length === 0) {
                 noData = true;
@@ -167,10 +174,6 @@
                 loading = false;
                 return;
             }
-
-            tournaments = tournaments.filter(function (tournament) {
-                return minAttendees <= tournament['numAttendees'];
-            });
 
             if (minAttendees !== 0) {
                 tournaments = tournaments.filter(item => item.numAttendees !== null && item.numAttendees !== undefined);
@@ -240,15 +243,13 @@
 
 {#if showShareDialog}
     <script>
-        const share_dialog = document.getElementById('share_dialog');
-        share_dialog.showModal();
+        document.getElementById('share_dialog').showModal();
     </script>
 {/if}
 
 {#if showWarningDialog}
     <script>
-        const warning = document.getElementById('warning');
-        warning.showModal();
+        document.getElementById('warning').showModal();
     </script>
 {/if}
 
@@ -275,7 +276,7 @@
                 url="https://mapping-smash.vercel.app/"></TwitterShare>
         <br><br>
 
-        <button onclick="share_dialog.close()">Close</button>
+        <button onclick="share_dialog.close(); showShareDialog = false;">Close</button>
     </div>
 </dialog>
 
