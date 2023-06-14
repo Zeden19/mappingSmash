@@ -8,20 +8,24 @@
     export let endDate;
     export let country;
     export let minAttendees = 0;
+    export let state;
+    export let game;
     export let showShareDialog;
+
 
 </script>
 
 <div style="position: absolute; top: 115px">
     {#if open}
-		<Sidebar bind:open bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:showShareDialog/>
+        <Sidebar bind:open bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:state
+                 bind:game bind:showShareDialog/>
     {/if}
     <button class:selected={open} on:click={() => open = !open}>Search</button>
 </div>
 
 <style>
 
-  button {
+    button {
         background-color: black;
         border: none;
         color: white;
@@ -36,22 +40,22 @@
         transition: right 0.5s ease-in-out;
     }
 
-  div {
-      text-align: left;
-      display: flex;
-      height: 100%;
-  }
+    div {
+        text-align: left;
+        display: flex;
+        height: 100%;
+    }
 
-  button:hover {
+    button:hover {
         background-color: #555;
     }
 
-  .selected {
-      background-color: #555;
-  }
+    .selected {
+        background-color: #555;
+    }
 
-  .selected:hover {
-      background-color: black;
-  }
+    .selected:hover {
+        background-color: black;
+    }
 
 </style>

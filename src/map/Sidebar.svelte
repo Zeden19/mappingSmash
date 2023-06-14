@@ -82,6 +82,9 @@
             unixStartTime = Math.floor(unixStartTime.getTime() / 1000);
             unixEndTime = Math.floor(unixEndTime.getTime() / 1000);
 
+            let gameSelections = game.split(" ");
+            console.log(gameSelections);
+
             const apiVersion = 'alpha';
             const endpoint = 'https://api.start.gg/gql/' + apiVersion;
             const client = new GraphQLClient(endpoint, {
@@ -121,7 +124,7 @@
                 after: unixStartTime,
                 before: unixEndTime,
                 state: state,
-                game: game
+                game: gameSelections
             };
 
             if (state === "all" || country !== "US") {
@@ -206,10 +209,13 @@
         } catch (error) {
             if (error.name === 'AbortError') {
                 cancelled = true;
+                loading = false;
             } else {
                 errorMessage = true;
+                loading = false;
                 console.error('Error:', error);
             }
+            return;
         }
         loading = false;
         hasSearched = true;
@@ -345,7 +351,7 @@
     {/if}
 
     {#if errorMessage}
-        <p style="color: red">There was an error loading the map</p>
+        <p style="color: red; width: fit-content(100%);">There was an error loading the map</p>
     {/if}
 
     {#if noData}
@@ -360,15 +366,15 @@
 
 <style>
     aside {
-        width: 12rem;
-        height: 55vh;
+        width: 12.9rem;
+        height: 65vh;
         overflow: hidden;
         display: block;
         background-color: #f2f2f2;
         font-family: 'Oswald', sans-serif;
         white-space: nowrap;
         border: black 4px solid;
-        padding: 5px 50px 5px 5px;
+        padding: 5px 40px 5px 5px;
     }
 
     label {
