@@ -38,9 +38,9 @@
         {/if}
 
         <ul id="navigation">
-            <li><a on:click={() => activePage = 'map'} href="#">Home</a></li>
-            <li><a on:click={() => activePage = 'about'} href="#">About</a></li>
-            <li><a on:click={() => activePage = 'contact'} href="#">Contact</a></li>
+            <li><a on:click={() => activePage = 'map'} href="#map">Home</a></li>
+            <li><a on:click={() => activePage = 'about'} href="#about">About</a></li>
+            <li><a on:click={() => activePage = 'contact'} href="#contact">Contact</a></li>
         </ul>
     </nav>
 
