@@ -1,11 +1,14 @@
 <script>
     import {slide} from 'svelte/transition';
     export let activePage;
+    let details = navigator.userAgent;
+    let regexp = /android|iphone|kindle|ipad/i;
+    let isMobileDevice = regexp.test(details);
 
 </script>
 
 
-<div>
+<div id="help-button">
     <button onclick="help_dialog.showModal()">Help</button>
 </div>
 
@@ -24,10 +27,17 @@
         Clicking on the "legend" button on the right will show what the colors of the markers mean. <br><br>
 
         I hope you enjoy using this website! <br><br>
-        
+
         Found a bug? <a style="cursor: pointer" on:click={() => activePage="contact"}>Contact</a> me
     </p>
     <button onclick="help_dialog.close()">Close</button>
+
+    {#if isMobileDevice}
+        <script>
+            document.getElementById("help-button").style.top = "94%";
+            document.getElementById("help-button").style.right = "40%";
+        </script>
+    {/if}
 </dialog>
 
 
@@ -66,26 +76,29 @@
     }
 
     dialog[open] {
-		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-	}
-	@keyframes zoom {
-		from {
-			transform: scale(0.5);
-		}
-		to {
-			transform: scale(1);
-		}
-	}
-	dialog[open]::backdrop {
-		animation: fade 0.2s ease-out;
-	}
-	@keyframes fade {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
+        animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes zoom {
+        from {
+            transform: scale(0.5);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+
+    dialog[open]::backdrop {
+        animation: fade 0.2s ease-out;
+    }
+
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 
 </style>

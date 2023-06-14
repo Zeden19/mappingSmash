@@ -53,7 +53,7 @@
     <button onclick="legend.close()">Close</button>
 </dialog>
 
-<div class="entire">
+<div class="entire" id="sidebar">
     <button class:selected={open} on:click={() => handleClick()}>Legend</button>
     {#if open}
         <aside class:animating={animating} transition:slide={{delay: 30, duration: 350, axis: 'x'}}>
@@ -90,11 +90,14 @@
             </p>
         </aside>
     {/if}
+
+    {#if isMobileDevice}
+        <script>document.getElementById("sidebar").style.top = "94%";</script>
+    {/if}
 </div>
 
 
 <style>
-
     button {
         background-color: black;
         border: none;
@@ -102,7 +105,6 @@
         padding: 10px 20px;
         border-radius: 20%;
         height: 40px;
-        margin-top: 2.9em;
     }
 
 
