@@ -618,7 +618,7 @@ Tournaments that have already concluded have a grey marker"/>
 
     @keyframes linearwipe {
         from {
-            width: 0;
+            width: 50%;
         }
     }
 
@@ -656,6 +656,7 @@ Tournaments that have already concluded have a grey marker"/>
         text-align: left;
         padding-left: 10px;
         overflow: visible;
+        white-space: nowrap;
     }
 
 </style>

@@ -27,7 +27,7 @@
 
     {#if isMobileDevice}
         <script>
-            document.getElementById("filter-button").style.top = "94%";
+            document.getElementById("filter-button").style.top = "9%";
         </script>
     {/if}
 </div>
