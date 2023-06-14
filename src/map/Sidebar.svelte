@@ -6,11 +6,18 @@
     import {slide} from 'svelte/transition';
     import TwitterShare from './TwitterShare.svelte';
     import {GraphQLClient} from 'graphql-request';
+    import Info from "./InfoCircle.svelte";
+    import InfoCircle from "./InfoCircle.svelte";
+
+    export let mapResult;
+
 
     let todayString = new Date();
-    export let mapResult;
-    export let startDate = todayString;
-    todayString = startDate;
+    todayString.setDate(todayString.getDate() - 14);
+    todayString = todayString.toISOString().split("T")[0];
+    export let startDate = new Date();
+
+
     export let endDate;
     export let country;
     export let minAttendees = 0;
@@ -44,7 +51,6 @@
             }
         });
     }
-
 
     let abortController;
 
@@ -86,7 +92,6 @@
             unixEndTime = Math.floor(unixEndTime.getTime() / 1000);
 
             let gameSelections = game.split(" ");
-            console.log(gameSelections);
 
             const apiVersion = 'alpha';
             const endpoint = 'https://api.start.gg/gql/' + apiVersion;
@@ -106,7 +111,6 @@
                   afterDate: $after
                   beforeDate: $before
                   videogameIds: $game
-                  regOpen: true
                   addrState: $state
                 }
               }) {
@@ -117,6 +121,7 @@
                   primaryContact
                   url
                   numAttendees
+                  state
                 }
               }
             }`;
@@ -135,8 +140,6 @@
                 query = query.replace(/addrState: \$state,?/, "").replace(", $state: String", "");
             }
 
-            console.log(variables);
-
             // idk how this works, but adding await here fixed most of my problems
             if (signal.aborted) {
                 return;
@@ -145,7 +148,6 @@
             let locations = [];
 
             tournaments = resData.tournaments.nodes;
-            console.log(tournaments);
 
             for (let i of resData.tournaments.nodes) {
                 const timestamp = i.startAt;
@@ -157,7 +159,6 @@
                     year: 'numeric'
                 });
             }
-
 
             tournaments = tournaments.filter(function (tournament) {
                 return minAttendees <= tournament['numAttendees'];
@@ -213,7 +214,8 @@
                             i.venueAddress,
                             url,
                             i.startAt,
-                            i.numAttendees]);
+                            i.numAttendees,
+                            i.state]);
                 }
             }
             mapResult = locations;
@@ -363,6 +365,10 @@
         </label>
     {/if}
 
+
+    <InfoCircle tooltip="Weekly Tournaments aren't always posted a week in advance.
+    Searching a week or 2 weeks prior can show weekly schedules.
+Tournaments that have already concluded have a grey marker"/>
     <label> From:
         <input min={todayString} bind:value={startDate} type="date">
     </label>
@@ -401,7 +407,7 @@
     aside {
         width: 12.9rem;
         height: 65vh;
-        overflow: hidden;
+        overflow: visible;
         display: block;
         background-color: #f2f2f2;
         font-family: 'Oswald', sans-serif;

@@ -63,6 +63,10 @@
                 marker.setIcon('https://maps.google.com/mapfiles/ms/icons/purple-dot.png')
             }
 
+            if (mapResult[i][8] === 3) {
+                marker.setIcon('grey-dot.png')
+            }
+
 
             // Add the marker to the array
             markers.push(marker);
