@@ -14,7 +14,7 @@
 
 <div style="position: absolute; top: 115px">
     {#if open}
-		<Sidebar bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:showShareDialog/>
+		<Sidebar bind:open bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:showShareDialog/>
     {/if}
     <button class:selected={open} on:click={() => open = !open}>Search</button>
 </div>

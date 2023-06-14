@@ -11,7 +11,6 @@
 
 
 <div>
-    <img alt="reimu-gif" class="reimu" src="reimu.gif">
 
     <p>Below you'll find links to contact me, please contact if you have bug reports, suggestions, or any other
         inquiries.</p>
@@ -26,6 +25,10 @@
         <MailTo/>
     </div>
 
+    <div class="reimu-div">
+        <img alt="reimu-gif" class="reimu" src="reimu.gif">
+    </div>
+
 </div>
 
 </body>
@@ -36,7 +39,7 @@
         border: black solid 2px;
         height: fit-content(100%);
         padding: 10px;
-        margin: 10px 200px;
+        margin: 10px 2em;
     }
 
     h2 {
@@ -46,14 +49,14 @@
         color: black;
         font-style: italic;
         background-color: #999;
-        margin: 0 230px;
+        margin: 0 1.5em;
         padding: 10px;
         border-top: grey 10px solid;
     }
 
     p {
         text-align: center;
-        font-size: 17px;
+        font-size: 1.1em;
         color: black;
     }
 
@@ -83,5 +86,17 @@
 
     .reimu {
         border: none;
+        margin-top: 15px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .reimu-div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        margin-right: 1.7em;
+        margin-left: 0;
     }
 </style>
