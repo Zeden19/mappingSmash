@@ -1,6 +1,7 @@
 <!-- Sidebar.svelte -->
 <script>
-    import Sidebar from "./Sidebar.svelte";
+    import Sidebar from "./FiltersSidebar.svelte";
+    import {construct_svelte_component} from "svelte/internal";
 
     export let open = false;
     export let mapResult;
@@ -12,16 +13,25 @@
     export let game;
     export let showShareDialog;
 
+    let details = navigator.userAgent;
+    let regexp = /android|iphone|kindle|ipad/i;
+    let isMobileDevice = regexp.test(details);
 
 </script>
 
-<div style="position: absolute; top: 115px">
-    {#if open}
-        <Sidebar bind:open bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:state
-                 bind:game bind:showShareDialog/>
-    {/if}
+<div id="filter-button" style="position: absolute; top: 7em">
+    <Sidebar bind:open bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:state
+             bind:game bind:showShareDialog/>
+
     <button class:selected={open} on:click={() => open = !open}>Search</button>
+
+    {#if isMobileDevice}
+        <script>
+            document.getElementById("filter-button").style.top = "94%";
+        </script>
+    {/if}
 </div>
+
 
 <style>
 

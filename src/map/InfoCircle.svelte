@@ -1,9 +1,10 @@
 <script>
     export let tooltip = false
+    export let marginRight;
 
 </script>
 
-<div data-tooltip={tooltip} class="circle">?</div>
+<div data-tooltip={tooltip} style="--marginR: {marginRight}" class="circle">?</div>
 
 <style>
     .circle {
@@ -16,7 +17,7 @@
         justify-content: center;
         align-items: center;
         float: right;
-        margin-right: 15px;
+        margin-right: var(--marginR);
     }
 
     .circle:hover {
