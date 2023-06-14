@@ -19,6 +19,7 @@
     export let open;
 
     export let showShareDialog = false;
+    let showWarningDialog = false;
     let loading = false;
     let errorMessage = false;
     let noData = false;
@@ -46,6 +47,7 @@
 
 
     let abortController;
+
     // I think im going to hell for this function
     async function updateMap() {
         abortController = new AbortController();
@@ -120,7 +122,7 @@
 
             const variables = {
                 cCode: country,
-                perPage: 200,
+                perPage: 51,
                 after: unixStartTime,
                 before: unixEndTime,
                 state: state,
@@ -156,6 +158,12 @@
 
             if (tournaments.length === 0) {
                 noData = true;
+                loading = false;
+                return;
+            }
+
+            if (tournaments.length > 50) {
+                showWarningDialog = true;
                 loading = false;
                 return;
             }
@@ -236,6 +244,25 @@
         share_dialog.showModal();
     </script>
 {/if}
+
+{#if showWarningDialog}
+    <script>
+        const warning = document.getElementById('warning');
+        warning.showModal();
+    </script>
+{/if}
+
+<dialog id="warning">
+    <h3>Too many tournaments!</h3> <br>
+
+    <p>It looks like your search had <b>More than 50 tournaments</b>, that's quite a lot!</p>
+
+    <p>Unfortunately, large searches cost more money due to geocoding costs, try narrowing your search by selecting
+        a narrower date or setting a minimum attendees.</p> <br>
+
+    <button onclick="warning.close()">Close</button>
+</dialog>
+
 
 <dialog id="share_dialog">
     <div><p>
