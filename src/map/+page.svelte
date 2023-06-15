@@ -11,6 +11,7 @@
     export let country;
     export let minAttendees = 0;
     export let showShareDialog;
+    export let geolocated;
 
     export let activePage;
 
@@ -25,7 +26,7 @@
 <div>
     {#if ready}
         <Map bind:mapResult/>
-        <Search bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees
+        <Search bind:geolocated bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees
                 bind:showShareDialog/>
         <Help bind:activePage/>
         <Legend/>

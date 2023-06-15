@@ -22,9 +22,11 @@
     export let state;
     export let game;
     export let open;
+    export let geolocated;
 
     export let showShareDialog = false;
     let showWarningDialog = false;
+    let showTooManyRequestsDialog = false;
     let loading = false;
     let errorMessage = false;
     let noData = false;
@@ -35,14 +37,31 @@
     let SMASH_GG_API_KEY = process.env.SMASH_GG_API_KEY;
     let geolocator = new google.maps.Geocoder();
 
-    const EST_OFFSET = -5 * 60;
-
     let details = navigator.userAgent;
     let regexp = /android|iphone|kindle|ipad/i;
     let isMobileDevice = regexp.test(details);
 
+    function getCookie(name) {
+        const cookieString = document.cookie;
+        const cookies = cookieString.split('; ');
+
+        for (let i = 0; i < cookies.length; i++) {
+            const [cookieName, cookieValue] = cookies[i].split('=');
+
+            if (cookieName === name) {
+                return decodeURIComponent(cookieValue);
+            }
+        }
+        return null;
+    }
 
     async function geocode_address(tournament) {
+        document.cookie = "geolocated=" + (parseInt(getCookie("geolocated")) + 1);
+        geolocated = getCookie("geolocated");
+
+        if (getCookie('geolocated') > 300) {
+            return "TOO_MANY_REQUESTS";
+        }
 
         return geolocator.geocode({'address': tournament.venueAddress}, function (results, status) {
             if (status === 'OK') {
@@ -200,6 +219,12 @@
                 try {
                     latlng = await geocode_address(i);
 
+                    if (latlng === "TOO_MANY_REQUESTS") {
+                        showTooManyRequestsDialog = true;
+                        loading = false;
+                        return;
+                    }
+
                 } catch (e) {
                     console.log(e);
                     continue;
@@ -222,6 +247,7 @@
                 }
             }
             mapResult = locations;
+
         } catch (error) {
             if (error.name === 'AbortError') {
                 cancelled = true;
@@ -260,6 +286,12 @@
     </script>
 {/if}
 
+{#if showTooManyRequestsDialog}
+    <script>
+        document.getElementById('too_many_requests').showModal();
+    </script>
+{/if}
+
 <dialog id="warning">
     <h3>Too many tournaments!</h3> <br>
 
@@ -279,11 +311,21 @@
 
         <TwitterShare
                 text="Check out Smash Mapping, a new way to find local tournaments."
-                url="https://mapping-smash.vercel.app/"></TwitterShare>
+                url="https://www.smash-mapping.com/"></TwitterShare>
         <br><br>
 
         <button onclick="share_dialog.close(); showShareDialog = false;">Close</button>
     </div>
+</dialog>
+
+<dialog id="too_many_requests">
+    <h3>The Geocoder's need a break!</h3> <br>
+
+    <p>Unfortunately, Smash Mapping is beginning to incur costs due to geocoding. That is why there is a 300
+        tournaments per day limit on requests. To reduce requests in the future try setting the attendee count to more
+        than 0.</p> <br>
+
+    <button onclick="too_many_requests.close()">Close</button>
 </dialog>
 
 <dialog class="filter-dialog" id="filter_dialog">

@@ -11,6 +11,7 @@
     export let state;
     export let game;
     export let showShareDialog;
+    export let geolocated;
 
     let details = navigator.userAgent;
     let regexp = /android|iphone|kindle|ipad/i;
@@ -30,7 +31,7 @@
 </script>
 
 <div id="filter-button" style="position: absolute; top: 7em">
-    <FilterSidebar bind:open bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:state
+    <FilterSidebar bind:geolocated bind:open bind:mapResult bind:startDate bind:endDate bind:country bind:minAttendees bind:state
                    bind:game bind:showShareDialog/>
 
     <button on:click={() => handleClick()}>Search</button>
