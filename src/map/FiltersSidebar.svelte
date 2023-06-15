@@ -6,11 +6,9 @@
     import {slide} from 'svelte/transition';
     import TwitterShare from './TwitterShare.svelte';
     import {GraphQLClient} from 'graphql-request';
-    import Info from "./InfoCircle.svelte";
     import InfoCircle from "./InfoCircle.svelte";
 
     export let mapResult;
-
 
     let todayString = new Date();
     todayString.setDate(todayString.getDate() - 14);
@@ -42,11 +40,24 @@
     let details = navigator.userAgent;
     let regexp = /android|iphone|kindle|ipad/i;
     let isMobileDevice = regexp.test(details);
+    let req = new XMLHttpRequest();
 
-    async function geocode_address(address) {
-        return geolocator.geocode({'address': address}, function (results, status) {
+
+    async function geocode_address(tournament) {
+        req.onreadystatechange = () => {
+            if (req.readyState === XMLHttpRequest.DONE) {
+                console.log(req.responseText);
+            }
+        };
+
+        req.open("PUT", "https://api.jsonbin.io/v3/b/648a8742b89b1e2299af4791", true);
+        req.setRequestHeader("Content-Type", "application/json");
+        req.setRequestHeader("X-Master-Key", "$2b$10$uU73GSMbQOXVue88E/EptOjk72Ez1GNmeShvCcCvPvmpNWYwDUtZy");
+        req.send(JSON.stringify(tournament));
+
+        return geolocator.geocode({'address': tournament.venueAddress}, function (results, status) {
             if (status === 'OK') {
-                console.log(address);
+                console.log(tournament.venueAddress);
                 return results[0].geometry.location;
             } else {
                 console.log(status);
@@ -198,7 +209,7 @@
                 }
 
                 try {
-                    latlng = await geocode_address(i.venueAddress);
+                    latlng = await geocode_address(i);
 
                 } catch (e) {
                     console.log(e);
