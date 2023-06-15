@@ -305,10 +305,12 @@
                 <option value="MX">Mexico</option>
                 <option value="JP">Japan</option>
                 <option value="FR">France</option>
-                <option value="DE">Germany</option>
                 <option value="GB">United Kingdom</option>
+                <option value="DE">Germany</option>
+                <option value="IT">Italy</option>
                 <option value="ES">Spain</option>
                 <option value="CH">Switzerland</option>
+                <option value="AU">Australia</option>
             </select>
         </label>
 
@@ -430,10 +432,13 @@ Tournaments that have already concluded have a grey marker"/>
                 <option value="MX">Mexico</option>
                 <option value="JP">Japan</option>
                 <option value="FR">France</option>
-                <option value="DE">Germany</option>
                 <option value="GB">United Kingdom</option>
+                <option value="DE">Germany</option>
+                <option value="IT">Italy</option>
                 <option value="ES">Spain</option>
                 <option value="CH">Switzerland</option>
+                <option value="NL">Netherlands</option>
+                <option value="AU">Australia</option>
             </select>
         </label>
 
