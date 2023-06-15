@@ -56,6 +56,10 @@
         height: 40px;
     }
 
+    button:hover {
+        background-color: #666666;
+    }
+
     div {
         text-align: left;
         display: flex;

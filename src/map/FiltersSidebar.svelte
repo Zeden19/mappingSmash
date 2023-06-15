@@ -235,7 +235,7 @@
         }
         loading = false;
         hasSearched = true;
-        open = false;
+        open = !open;
         document.getElementById("filter_dialog").close();
     }
 
@@ -387,7 +387,7 @@ Tournaments that have already concluded have a grey marker"/>
         </label>
 
         <button disabled='{loading}' on:click={() => updateMap()}>Search</button>
-        <button onclick="filter_dialog.close()">Close</button>
+        <button onclick="open = !open; filter_dialog.close(); console.log(open)">Close</button>
 
         {#if loading}
             <button on:click={() => cancelRequest()}>Cancel</button>

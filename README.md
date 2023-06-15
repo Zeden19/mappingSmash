@@ -20,16 +20,18 @@
 <s><li>Help Screen</li></s>
 <s><li>Fix date (For some reason its ahead by 1 day, mayb cause of timezone issues)</li></s>
 <li>Thank ABB</li>
+<li>Rework the update map function its a mess</li>
 
 
 <h2>Bigger Features:</h2>
 <li>Directions and distance from current location (or from a set location). Showing u the closes tournament towards you</li>
 <li>Tournament search on current query (date, name, etc.)</li>
-<li>Proper time zones (user sets the time-zone</li>
+<s><li>Proper time zones (user sets the time-zone</li></s>
 <li>More game selection (with multiple game selection)</li>
-<li>Add 1 time dialog box to thank user for using my website, and to share my website on social media</li>
+<s><li>Add 1 time dialog box to thank user for using my website, and to share my website on social media</li></s>
 <li>A proper tutorial</li>
 
 <h2>Bugs</h2>
 <li>Google Pixel bug (i have no idea lmao)/li>
 <s><li>Timezones are weird</li></s>
+
