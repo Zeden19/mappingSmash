@@ -40,20 +40,9 @@
     let details = navigator.userAgent;
     let regexp = /android|iphone|kindle|ipad/i;
     let isMobileDevice = regexp.test(details);
-    let req = new XMLHttpRequest();
 
 
     async function geocode_address(tournament) {
-        req.onreadystatechange = () => {
-            if (req.readyState === XMLHttpRequest.DONE) {
-                console.log(req.responseText);
-            }
-        };
-
-        req.open("PUT", "https://api.jsonbin.io/v3/b/648a8742b89b1e2299af4791", true);
-        req.setRequestHeader("Content-Type", "application/json");
-        req.setRequestHeader("X-Master-Key", "$2b$10$uU73GSMbQOXVue88E/EptOjk72Ez1GNmeShvCcCvPvmpNWYwDUtZy");
-        req.send(JSON.stringify(tournament));
 
         return geolocator.geocode({'address': tournament.venueAddress}, function (results, status) {
             if (status === 'OK') {
