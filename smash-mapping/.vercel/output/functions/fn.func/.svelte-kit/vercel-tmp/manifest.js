@@ -10,7 +10,7 @@ return {
 	assets: new Set(["example.png","favicon.png","filter.png","markers/blue-marker.png","markers/green-marker.png","markers/grey-marker.png","markers/purple-marker.png","markers/red-marker.png","markers/yellow-marker.png","outlook.png","questionmark.png","reimu-standing.gif","reimu.gif","tournament-card-icons/clock.png","tournament-card-icons/map-marker.png","tournament-card-icons/people.png","tournaments.png"]),
 	mimeTypes: {".png":"image/png",".gif":"image/gif"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.95bb4f8f.js","app":"_app/immutable/entry/app.a4139a8a.js","imports":["_app/immutable/entry/start.95bb4f8f.js","_app/immutable/chunks/index.f2f7f558.js","_app/immutable/chunks/singletons.e373f885.js","_app/immutable/entry/app.a4139a8a.js","_app/immutable/chunks/preload-helper.41c905a7.js","_app/immutable/chunks/index.f2f7f558.js"],"stylesheets":[],"fonts":[]},
+		client: {"start":"_app/immutable/entry/start.772a808b.js","app":"_app/immutable/entry/app.0af2b279.js","imports":["_app/immutable/entry/start.772a808b.js","_app/immutable/chunks/index.f2f7f558.js","_app/immutable/chunks/singletons.bda8e594.js","_app/immutable/entry/app.0af2b279.js","_app/immutable/chunks/preload-helper.41c905a7.js","_app/immutable/chunks/index.f2f7f558.js"],"stylesheets":[],"fonts":[]},
 		nodes: [
 			__memo(() => import('../output/server/nodes/0.js')),
 			__memo(() => import('../output/server/nodes/1.js')),

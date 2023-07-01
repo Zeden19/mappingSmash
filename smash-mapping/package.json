@@ -29,6 +29,7 @@
 	"dependencies": {
 		"@googlemaps/js-api-loader": "^1.16.2",
 		"@googlemaps/markerclusterer": "^2.2.3",
+		"@sveltejs/kit": "^1.5.0",
 		"@supabase/supabase-js": "^2.25.0",
 		"graphql-request": "^6.1.0",
 		"svelte-device-info": "^1.0.0"
