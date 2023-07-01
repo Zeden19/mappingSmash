@@ -4,7 +4,7 @@ export const manifest = {
 	assets: new Set(["example.png","favicon.png","filter.png","markers/blue-marker.png","markers/green-marker.png","markers/grey-marker.png","markers/purple-marker.png","markers/red-marker.png","markers/yellow-marker.png","outlook.png","questionmark.png","reimu-standing.gif","reimu.gif","tournament-card-icons/clock.png","tournament-card-icons/map-marker.png","tournament-card-icons/people.png","tournaments.png"]),
 	mimeTypes: {".png":"image/png",".gif":"image/gif"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.7b57f11c.js","app":"_app/immutable/entry/app.bdf590bc.js","imports":["_app/immutable/entry/start.7b57f11c.js","_app/immutable/chunks/index.f2f7f558.js","_app/immutable/chunks/singletons.ccc7e0f2.js","_app/immutable/entry/app.bdf590bc.js","_app/immutable/chunks/preload-helper.41c905a7.js","_app/immutable/chunks/index.f2f7f558.js"],"stylesheets":[],"fonts":[]},
+		client: {"start":"_app/immutable/entry/start.871c9567.js","app":"_app/immutable/entry/app.d27513ae.js","imports":["_app/immutable/entry/start.871c9567.js","_app/immutable/chunks/index.f2f7f558.js","_app/immutable/chunks/singletons.e350f652.js","_app/immutable/entry/app.d27513ae.js","_app/immutable/chunks/preload-helper.41c905a7.js","_app/immutable/chunks/index.f2f7f558.js"],"stylesheets":[],"fonts":[]},
 		nodes: [
 			() => import('../output/server/nodes/0.js'),
 			() => import('../output/server/nodes/1.js'),
