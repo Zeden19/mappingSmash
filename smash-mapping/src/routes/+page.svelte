@@ -6,8 +6,6 @@
     import {slide} from "svelte/transition";
     import {backInOut} from "svelte/easing";
 
-    // blur borders for pop-out effect
-
     export let data;
     let mapResult;
     let startDate;
