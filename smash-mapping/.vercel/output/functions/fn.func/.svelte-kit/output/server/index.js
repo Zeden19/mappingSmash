@@ -1,4 +1,4 @@
-import { b as base, a as assets, r as reset, p as public_env, o as options, g as get_hooks, s as set_public_env } from "./chunks/internal.js";
+import { b as base, a as assets, r as reset, p as public_env, o as options, s as set_private_env, c as set_public_env, g as get_hooks } from "./chunks/internal.js";
 import * as devalue from "devalue";
 import { n as noop, s as safe_not_equal } from "./chunks/index.js";
 import { parse, serialize } from "cookie";
@@ -96,11 +96,10 @@ function exec(match, params, matchers) {
   let buffered = 0;
   for (let i = 0; i < params.length; i += 1) {
     const param = params[i];
-    const value = values[i - buffered];
+    let value = values[i - buffered];
     if (param.chained && param.rest && buffered) {
-      result[param.name] = values.slice(i - buffered, i + 1).filter((s2) => s2).join("/");
+      value = values.slice(i - buffered, i + 1).filter((s2) => s2).join("/");
       buffered = 0;
-      continue;
     }
     if (value === void 0) {
       if (param.rest)
@@ -150,7 +149,12 @@ const encoder$3 = new TextEncoder();
 function text(body, init2) {
   const headers = new Headers(init2?.headers);
   if (!headers.has("content-length")) {
-    headers.set("content-length", encoder$3.encode(body).byteLength.toString());
+    const encoded = encoder$3.encode(body);
+    headers.set("content-length", encoded.byteLength.toString());
+    return new Response(encoded, {
+      ...init2,
+      headers
+    });
   }
   return new Response(body, {
     ...init2,
@@ -709,6 +713,7 @@ async function load_data({
 function create_universal_fetch(event, state, fetched, csr, resolve_opts) {
   return async (input, init2) => {
     const cloned_body = input instanceof Request && input.body ? input.clone().body : null;
+    const cloned_headers = input instanceof Request && [...input.headers].length ? new Headers(input.headers) : init2?.headers;
     let response = await event.fetch(input, init2);
     const url = new URL(input instanceof Request ? input.url : input, event.url);
     const same_origin = url.origin === event.url.origin;
@@ -753,7 +758,7 @@ function create_universal_fetch(event, state, fetched, csr, resolve_opts) {
                 /** @type {string | ArrayBufferView | undefined} */
                 input instanceof Request && cloned_body ? await stream_to_string(cloned_body) : init2?.body
               ),
-              request_headers: init2?.headers,
+              request_headers: cloned_headers,
               response_body: body,
               response: response2
             });
@@ -2573,7 +2578,8 @@ async function respond(request, options2, manifest, state) {
       }
     },
     url,
-    isDataRequest: is_data_request
+    isDataRequest: is_data_request,
+    isSubRequest: state.depth > 0
   };
   let resolve_opts = {
     transformPageChunk: default_transform,
@@ -2779,6 +2785,20 @@ async function respond(request, options2, manifest, state) {
     }
   }
 }
+function filter_private_env(env, { public_prefix, private_prefix }) {
+  return Object.fromEntries(
+    Object.entries(env).filter(
+      ([k]) => k.startsWith(private_prefix) && (public_prefix === "" || !k.startsWith(public_prefix))
+    )
+  );
+}
+function filter_public_env(env, { public_prefix, private_prefix }) {
+  return Object.fromEntries(
+    Object.entries(env).filter(
+      ([k]) => k.startsWith(public_prefix) && (private_prefix === "" || !k.startsWith(private_prefix))
+    )
+  );
+}
 class Server {
   /** @type {import('types').SSROptions} */
   #options;
@@ -2795,11 +2815,18 @@ class Server {
    * }} opts
    */
   async init({ env }) {
-    const entries = Object.entries(env);
-    const prefix = this.#options.env_public_prefix;
-    Object.fromEntries(entries.filter(([k]) => !k.startsWith(prefix)));
-    const pub = Object.fromEntries(entries.filter(([k]) => k.startsWith(prefix)));
-    set_public_env(pub);
+    set_private_env(
+      filter_private_env(env, {
+        public_prefix: this.#options.env_public_prefix,
+        private_prefix: this.#options.env_private_prefix
+      })
+    );
+    set_public_env(
+      filter_public_env(env, {
+        public_prefix: this.#options.env_public_prefix,
+        private_prefix: this.#options.env_private_prefix
+      })
+    );
     if (!this.#options.hooks) {
       try {
         const module = await get_hooks();
